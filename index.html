@@ -6,7 +6,7 @@
     <title>BVEC CODE Club - Admin Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --sage-green: #D4E09B;
@@ -14,7 +14,9 @@
             --soft-mint: #CBDFBD;
             --warm-coral: #F19C79;
             --text-dark: #2c3e2d;
-            --text-light: #5a6c5d;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -25,511 +27,341 @@
 
         body {
             font-family: 'Open Sans', sans-serif;
-            background: linear-gradient(135deg, var(--sage-green) 0%, var(--soft-mint) 50%, var(--cream-white) 100%);
+            background: linear-gradient(135deg, var(--cream-white) 0%, #f9fafb 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Animated background elements */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 8s ease-in-out infinite;
-            color: var(--text-dark);
-        }
-
-        .floating-element:nth-child(1) {
-            top: 15%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            top: 60%;
-            right: 15%;
-            animation-delay: 3s;
-        }
-
-        .floating-element:nth-child(3) {
-            bottom: 20%;
-            left: 45%;
-            animation-delay: 6s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(180deg); }
+            padding: 20px;
         }
 
         .login-container {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 0;
             width: 100%;
-            max-width: 460px;
-            box-shadow: 0 25px 70px rgba(44, 62, 45, 0.15);
-            border: 2px solid rgba(203, 223, 189, 0.3);
+            max-width: 400px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
             overflow: hidden;
-            animation: slideUp 1s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            position: relative;
         }
 
         .login-header {
-            background: linear-gradient(135deg, var(--sage-green) 0%, var(--soft-mint) 100%);
-            color: var(--text-dark);
-            padding: 3rem 2rem 2rem;
+            padding: 40px 30px 20px;
             text-align: center;
-            position: relative;
-        }
-
-        .login-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--warm-coral), var(--sage-green), var(--soft-mint), var(--cream-white));
-            background-size: 400% 100%;
-            animation: shimmer 3s linear infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -400% 0; }
-            100% { background-position: 400% 0; }
-        }
-
-        .logo-container {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .logo-bg {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, var(--warm-coral), var(--soft-mint));
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .logo-bg::before {
-            content: '';
-            position: absolute;
-            inset: 3px;
-            background: var(--cream-white);
-            border-radius: 19px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--cream-white) 100%);
+            border-bottom: 1px solid #f3f4f6;
         }
 
         .club-logo {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--sage-green), var(--soft-mint));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .club-logo::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: var(--white);
+            border-radius: 10px;
+        }
+
+        .logo-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
             object-fit: cover;
             position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 2px 8px rgba(44, 62, 45, 0.2));
+            z-index: 1;
         }
 
         .login-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
+            font-size: 24px;
+            font-weight: 700;
             color: var(--text-dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         .login-subtitle {
-            opacity: 0.8;
-            font-size: 1rem;
-            font-weight: 500;
             color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
         }
 
         .login-body {
-            padding: 2.5rem 2rem;
-            background: var(--cream-white);
+            padding: 30px;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
+            margin-bottom: 20px;
         }
 
         .form-label {
+            display: block;
             font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 0.75rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
         }
 
-        .input-wrapper {
+        .input-group {
             position: relative;
         }
 
         .form-control {
-            background: #ffffff;
-            border: 2px solid var(--soft-mint);
-            border-radius: 16px;
-            padding: 1rem 1.25rem 1rem 3.5rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
             width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            background: var(--white);
+            transition: all 0.2s ease;
             font-family: 'Open Sans', sans-serif;
-            font-weight: 500;
         }
 
         .form-control:focus {
-            background: #ffffff;
-            border-color: var(--warm-coral);
-            box-shadow: 0 0 0 4px rgba(241, 156, 121, 0.15);
             outline: none;
+            border-color: var(--sage-green);
+            box-shadow: 0 0 0 3px rgba(212, 224, 155, 0.1);
         }
 
         .input-icon {
             position: absolute;
-            left: 1.25rem;
+            left: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-light);
-            transition: color 0.3s ease;
-            font-size: 1.1rem;
+            font-size: 16px;
         }
 
         .form-control:focus + .input-icon {
-            color: var(--warm-coral);
+            color: var(--sage-green);
         }
 
         .btn-login {
-            background: linear-gradient(135deg, var(--warm-coral) 0%, #e8926a 100%);
-            color: white;
+            width: 100%;
+            background: linear-gradient(135deg, var(--text-dark), #374151);
+            color: var(--white);
             border: none;
-            border-radius: 16px;
-            padding: 1rem 2rem;
-            font-weight: 700;
-            font-size: 1rem;
-            width: 100%;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-login::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.6s;
-        }
-
-        .btn-login:hover::before {
-            left: 100%;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            margin-top: 10px;
         }
 
         .btn-login:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(241, 156, 121, 0.4);
+            background: linear-gradient(135deg, #374151, var(--text-dark));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(44, 62, 45, 0.3);
         }
 
-        .btn-login:active {
-            transform: translateY(-1px);
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .alert {
-            border-radius: 16px;
+            padding: 12px 16px;
+            border-radius: 10px;
             border: none;
-            padding: 1rem 1.25rem;
-            margin-bottom: 1.5rem;
-            animation: slideIn 0.4s ease-out;
-            background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
+            margin-bottom: 20px;
+            font-size: 14px;
             font-weight: 500;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-25px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .alert-danger {
+            background: #fef2f2;
+            color: #dc2626;
+            border-left: 3px solid #dc2626;
         }
 
         .forgot-section {
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid var(--soft-mint);
-        }
-
-        .forgot-text {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 0.75rem;
-            font-weight: 500;
+            padding-top: 20px;
+            border-top: 1px solid #f3f4f6;
+            margin-top: 20px;
         }
 
         .forgot-link {
-            color: var(--warm-coral);
+            color: var(--text-light);
             text-decoration: none;
-            font-weight: 700;
-            padding: 0.5rem 1rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
         }
 
         .forgot-link:hover {
-            background: rgba(241, 156, 121, 0.1);
-            color: var(--warm-coral);
-            transform: translateY(-1px);
+            color: var(--sage-green);
         }
 
-        /* Modal improvements */
+        .accent-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sage-green), var(--soft-mint), var(--warm-coral));
+        }
+
+        /* Modal Styles */
         .modal-content {
-            border-radius: 24px;
             border: none;
-            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
         }
 
         .modal-header {
-            background: linear-gradient(135deg, var(--sage-green) 0%, var(--soft-mint) 100%);
-            color: var(--text-dark);
-            border: none;
-            padding: 2rem 2.5rem 1.5rem;
+            background: linear-gradient(135deg, var(--cream-white), var(--white));
+            border-bottom: 1px solid #f3f4f6;
+            border-radius: 16px 16px 0 0;
         }
 
         .modal-title {
             font-weight: 700;
-            font-size: 1.4rem;
-            font-family: 'Open Sans', sans-serif;
-        }
-
-        .modal-body {
-            padding: 2rem 2.5rem;
-            background: var(--cream-white);
-        }
-
-        .contact-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 2px solid var(--soft-mint);
+            color: var(--text-dark);
         }
 
         .whatsapp-btn {
-            background: linear-gradient(135deg, #25d366 0%, #20ba5a 100%);
+            background: linear-gradient(135deg, #25d366, #128c7e);
             color: white;
             border: none;
-            border-radius: 16px;
-            padding: 1rem 1.5rem;
-            font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 10px;
             text-decoration: none;
-            display: block;
-            text-align: center;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
         .whatsapp-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            background: linear-gradient(135deg, #128c7e, #25d366);
+            transform: translateY(-1px);
             color: white;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 480px) {
             .login-container {
-                margin: 1rem;
-                max-width: calc(100% - 2rem);
+                margin: 10px;
+                max-width: calc(100% - 20px);
             }
             
             .login-header {
-                padding: 2rem 1.5rem 1.5rem;
+                padding: 30px 20px 15px;
             }
             
             .login-body {
-                padding: 2rem 1.5rem;
+                padding: 20px;
             }
+        }
 
-            .login-title {
-                font-size: 1.6rem;
-            }
+        /* Loading animation */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
     </style>
 </head>
 <body>
-    <!-- Animated background -->
-    <div class="bg-animation">
-        <div class="floating-element">
-            <i class="fas fa-code fa-4x"></i>
-        </div>
-        <div class="floating-element">
-            <i class="fas fa-laptop-code fa-3x"></i>
-        </div>
-        <div class="floating-element">
-            <i class="fas fa-terminal fa-3x"></i>
-        </div>
-    </div>
-
     <div class="login-container">
+        <div class="accent-dots"></div>
+        
         <div class="login-header">
-            <div class="logo-container">
-                <div class="logo-bg">
-                    <img src="https://drive.google.com/uc?id=1orIj_6DpEFSwYUJA6AcAHnDAASoURnKU&export=download" 
-                         alt="BVEC CODE Club Logo" class="club-logo">
-                </div>
+            <div class="club-logo">
+                <img src="https://drive.google.com/uc?id=1orIj_6DpEFSwYUJA6AcAHnDAASoURnKU&export=download" 
+                     alt="BVEC Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <i class="fas fa-code" style="display: none; color: var(--sage-green); font-size: 24px; z-index: 1;"></i>
             </div>
             <h1 class="login-title">BVEC CODE Club</h1>
-            <p class="login-subtitle">Admin Portal Access</p>
+            <p class="login-subtitle">Admin Portal</p>
         </div>
 
         <div class="login-body">
-            <div id="loginAlert" class="alert d-none" role="alert">
+            <div id="loginAlert" class="alert alert-danger d-none">
                 <i class="fas fa-exclamation-triangle me-2"></i>
-                <strong>Access Denied!</strong> Invalid credentials provided.
+                Invalid credentials. Please try again.
             </div>
 
             <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label">Membership ID</label>
-                    <div class="input-wrapper">
+                    <div class="input-group">
                         <input type="text" class="form-control" id="membershipId" placeholder="2025#0010" required>
-                        <i class="fas fa-id-card input-icon"></i>
+                        <i class="fas fa-user input-icon"></i>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Access Password</label>
-                    <div class="input-wrapper">
-                        <input type="password" class="form-control" id="password" placeholder="Enter secure password" required>
+                    <label class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="Enter password" required>
                         <i class="fas fa-lock input-icon"></i>
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn-login">
-                    <i class="fas fa-sign-in-alt me-2"></i>
-                    Access Dashboard
+                    <span class="btn-text">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </span>
                 </button>
             </form>
 
             <div class="forgot-section">
-                <p class="forgot-text">Need assistance with your credentials?</p>
                 <a href="#" class="forgot-link" data-bs-toggle="modal" data-bs-target="#helpModal">
-                    <i class="fas fa-question-circle me-2"></i>Get Help
+                    Need help with login?
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Enhanced Help Modal -->
+    <!-- Help Modal -->
     <div class="modal fade" id="helpModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="fas fa-life-ring me-2"></i>Credential Recovery Center
+                        <i class="fas fa-question-circle me-2"></i>Get Support
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="contact-card">
-                                <h6 class="fw-bold mb-3" style="color: var(--text-dark);">
-                                    <i class="fab fa-whatsapp text-success me-2"></i>WhatsApp Support
-                                </h6>
-                                <p class="text-muted mb-3">Get instant help via WhatsApp chat</p>
-                                <a href="https://wa.me/919876543210?text=Hi, I need help with my BVEC CODE Club admin panel credentials" 
-                                   class="whatsapp-btn" target="_blank">
-                                    <i class="fab fa-whatsapp me-2"></i>Chat Now
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="contact-card">
-                                <h6 class="fw-bold mb-3" style="color: var(--text-dark);">
-                                    <i class="fas fa-phone me-2" style="color: var(--warm-coral);"></i>Direct Call
-                                </h6>
-                                <p class="text-muted mb-3">Speak directly with our admin</p>
-                                <div class="text-center">
-                                    <h5 style="color: var(--warm-coral);">+91 98765 43210</h5>
-                                    <small class="text-muted">Available: 9 AM - 6 PM</small>
-                                </div>
-                            </div>
+                    <div class="text-center mb-4">
+                        <p class="mb-3">Contact admin for credential assistance</p>
+                        <a href="https://wa.me/919876543210?text=Hi, I need help with BVEC CODE Club admin credentials" 
+                           class="whatsapp-btn d-inline-block" target="_blank">
+                            <i class="fab fa-whatsapp me-2"></i>Contact on WhatsApp
+                        </a>
+                        <div class="mt-3">
+                            <small class="text-muted">Phone: +91 98765 43210</small>
                         </div>
                     </div>
-                    
-                    <hr class="my-4">
-                    
-                    <h6 class="fw-bold mb-3" style="color: var(--text-dark);">
-                        <i class="fas fa-paper-plane me-2"></i>Send Recovery Request
-                    </h6>
-                    <form id="recoveryForm">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Your Name</label>
-                                    <input type="text" class="form-control" id="recoveryName" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" id="recoveryEmail" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Issue Description</label>
-                            <textarea class="form-control" id="recoveryMessage" rows="3" 
-                                      placeholder="Describe your credential recovery needs..."></textarea>
-                        </div>
-                        <button type="submit" class="btn w-100" 
-                                style="background: var(--warm-coral); color: white; border-radius: 16px; padding: 1rem; font-weight: 600;">
-                            <i class="fas fa-paper-plane me-2"></i>Send Recovery Request
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -537,7 +369,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Enhanced login system with better UX
         const validCredentials = {
             membershipIds: ['2025#0010', '2025#0020', '2025#0030', '2025#0040', '2025#0050'],
             password: 'bvecCODEclub25MS-only'
@@ -549,87 +380,61 @@
             const membershipId = document.getElementById('membershipId').value.trim();
             const password = document.getElementById('password').value;
             const alertDiv = document.getElementById('loginAlert');
-            const submitBtn = this.querySelector('button[type="submit"]');
+            const submitBtn = this.querySelector('.btn-login');
+            const btnText = submitBtn.querySelector('.btn-text');
             
             // Show loading state
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Verifying...';
+            const originalText = btnText.innerHTML;
+            btnText.innerHTML = '<span class="spinner me-2"></span>Signing in...';
             submitBtn.disabled = true;
             
-            // Simulate authentication delay for better UX
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            // Hide any existing alerts
+            alertDiv.classList.add('d-none');
+            
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
             
             if (validCredentials.membershipIds.includes(membershipId) && 
                 password === validCredentials.password) {
                 
-                // Success animation
-                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Access Granted!';
-                submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                // Success state
+                btnText.innerHTML = '<i class="fas fa-check me-2"></i>Success!';
+                submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                 
-                // Store session with enhanced data
+                // Store session data
                 sessionStorage.setItem('adminLoggedIn', 'true');
                 sessionStorage.setItem('membershipId', membershipId);
                 sessionStorage.setItem('loginTime', new Date().toISOString());
                 
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
-                }, 1000);
+                }, 800);
                 
             } else {
-                // Error handling with shake animation
+                // Error state
                 alertDiv.classList.remove('d-none');
-                document.querySelector('.login-container').style.animation = 'shake 0.5s ease-in-out';
+                document.querySelector('.login-container').classList.add('shake');
                 
                 setTimeout(() => {
+                    document.querySelector('.login-container').classList.remove('shake');
                     alertDiv.classList.add('d-none');
-                    document.querySelector('.login-container').style.animation = '';
                 }, 3000);
                 
-                submitBtn.innerHTML = originalText;
+                btnText.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }
-        });
-
-        // Recovery form handler
-        document.getElementById('recoveryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Request Sent!';
-            submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-            
-            setTimeout(() => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('helpModal'));
-                modal.hide();
-                this.reset();
-                submitBtn.innerHTML = originalText;
                 submitBtn.style.background = '';
-            }, 2000);
+            }
         });
 
-        // Add shake animation keyframes
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                75% { transform: translateX(10px); }
+        // Auto-focus first input
+        document.getElementById('membershipId').focus();
+        
+        // Enter key navigation
+        document.getElementById('membershipId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('password').focus();
             }
-        `;
-        document.head.appendChild(style);
+        });
     </script>
 </body>
 </html>
-🚀 Updated Dashboard (dashboard.html)
-xml
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BVEC CODE Club - Command Center</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=O
