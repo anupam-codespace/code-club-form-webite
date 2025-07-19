@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Rich Text Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         :root[data-theme="light"] {
@@ -101,7 +100,7 @@
             background: currentColor;
         }
 
-        /* Mobile Navigation - Top Bar Only */
+        /* Mobile Navigation */
         .mobile-nav {
             display: none;
             position: fixed;
@@ -477,84 +476,65 @@
             padding: 28px;
         }
 
-        /* Enhanced Settings Section */
-        .settings-grid {
+        /* Enhanced Stats Cards */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 24px;
+            margin-bottom: 32px;
         }
 
-        .settings-card {
+        .stat-card {
             background: var(--card-bg);
             border: 2px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .settings-card:hover {
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .stat-card:nth-child(1)::before { background: var(--sage-green); }
+        .stat-card:nth-child(2)::before { background: var(--warm-coral); }
+        .stat-card:nth-child(3)::before { background: var(--soft-mint); }
+        .stat-card:nth-child(4)::before { background: linear-gradient(90deg, var(--sage-green), var(--warm-coral)); }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
         }
 
-        .settings-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--warm-coral);
         }
 
-        .settings-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--sage-green);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
             color: var(--text-dark);
+            margin-bottom: 0.5rem;
         }
 
-        .theme-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 16px;
+        .stat-label {
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .theme-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--card-bg);
-        }
-
-        .theme-option.active {
-            border-color: var(--sage-green);
-            background: rgba(212, 224, 155, 0.1);
-        }
-
-        .theme-preview {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-        }
-
-        .theme-preview.light {
-            background: linear-gradient(135deg, #ffffff, #f9fafb);
-        }
-
-        .theme-preview.dark {
-            background: linear-gradient(135deg, #1f2937, #111827);
-        }
-
-        /* Enhanced Buttons */
+        /* Buttons */
         .btn {
             padding: 14px 28px;
             border-radius: 14px;
@@ -596,21 +576,25 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, var(--sage-green), var(--soft-mint));
+            color: var(--text-dark);
+        }
+
         .btn-danger {
             background: linear-gradient(135deg, #dc2626, #b91c1c);
             color: white;
         }
 
-        .btn-outline {
+        .btn-outline-primary {
             background: transparent;
-            border: 2px solid var(--border);
+            border: 2px solid var(--text-dark);
             color: var(--text-dark);
         }
 
-        .btn-outline:hover {
+        .btn-outline-primary:hover {
             background: var(--text-dark);
             color: var(--text-dark === '#1f2937' ? '#ffffff' : '#1f2937');
-            border-color: var(--text-dark);
         }
 
         .logout-btn {
@@ -648,6 +632,101 @@
             color: var(--text-dark);
             margin-bottom: 10px;
             font-size: 14px;
+        }
+
+        /* Table Styles */
+        .table {
+            font-size: 14px;
+        }
+
+        .table th {
+            background: var(--bg-light);
+            font-weight: 700;
+            color: var(--text-dark);
+            border: none;
+            padding: 16px;
+        }
+
+        .table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dark);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(212, 224, 155, 0.05);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border: none;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            background: var(--card-bg);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--cream-white), var(--card-bg));
+            border-bottom: 2px solid var(--border);
+            border-radius: 20px 20px 0 0;
+            padding: 24px;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .modal-body {
+            padding: 24px;
+            background: var(--card-bg);
+        }
+
+        .modal-footer {
+            border-top: 2px solid var(--border);
+            padding: 20px 24px;
+            background: var(--card-bg);
+        }
+
+        /* Image Upload */
+        .image-upload {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+        }
+
+        .image-upload:hover {
+            border-color: var(--sage-green);
+            background: rgba(212, 224, 155, 0.05);
+        }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            margin: 10px auto;
+        }
+
+        /* Rich Text Editor */
+        .ql-editor {
+            min-height: 200px;
+            color: var(--text-dark);
+        }
+
+        .ql-toolbar {
+            border-top: 2px solid var(--border);
+            border-left: 2px solid var(--border);
+            border-right: 2px solid var(--border);
+        }
+
+        .ql-container {
+            border-bottom: 2px solid var(--border);
+            border-left: 2px solid var(--border);
+            border-right: 2px solid var(--border);
         }
 
         /* Loading States */
@@ -716,8 +795,8 @@
                 font-size: 28px;
             }
 
-            .settings-grid {
-                grid-template-columns: 1fr;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
             }
 
@@ -743,17 +822,12 @@
                 padding-top: 85px;
             }
 
-            .mobile-nav {
-                padding: 12px 16px;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
 
             .page-title {
                 font-size: 24px;
-            }
-
-            .brand-logo {
-                width: 45px;
-                height: 45px;
             }
         }
     </style>
@@ -899,53 +973,413 @@
             </div>
 
             <!-- Quick Stats -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-calendar-alt fa-2x text-primary mb-3"></i>
-                            <h4 id="eventsCount">0</h4>
-                            <p class="text-muted">Events</p>
-                        </div>
-                    </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-alt stat-icon"></i>
+                    <div class="stat-number" id="eventsCount">0</div>
+                    <div class="stat-label">Events</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-blog fa-2x text-success mb-3"></i>
-                            <h4 id="blogsCount">0</h4>
-                            <p class="text-muted">Blog Posts</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <i class="fas fa-blog stat-icon"></i>
+                    <div class="stat-number" id="blogsCount">0</div>
+                    <div class="stat-label">Blog Posts</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-users fa-2x text-info mb-3"></i>
-                            <h4 id="teamCount">0</h4>
-                            <p class="text-muted">Team Members</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <i class="fas fa-users stat-icon"></i>
+                    <div class="stat-number" id="teamCount">0</div>
+                    <div class="stat-label">Team Members</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-bullhorn fa-2x text-warning mb-3"></i>
-                            <h4 id="noticesCount">0</h4>
-                            <p class="text-muted">Active Notices</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <i class="fas fa-bullhorn stat-icon"></i>
+                    <div class="stat-number" id="noticesCount">0</div>
+                    <div class="stat-label">Active Notices</div>
                 </div>
             </div>
 
             <!-- Recent Activities -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-clock"></i>Recent Activities
+                    <div>
+                        <i class="fas fa-clock me-2"></i>Recent Activities
+                    </div>
                 </div>
                 <div class="card-body">
                     <div id="recentActivities">
                         <p class="text-muted">No recent activities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Section -->
+        <div id="events-section" class="section d-none">
+            <div class="top-bar">
+                <div class="page-info">
+                    <h1 class="page-title">Events Management</h1>
+                    <p class="page-subtitle">Create and manage club events with detailed information</p>
+                </div>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="eventsAdminId">ID: 2025#0010</div>
+                        <button class="btn btn-primary" onclick="showEventModal()">
+                            <i class="fas fa-plus"></i>Add Event
+                        </button>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="eventsCurrentTime"></div>
+                        <div id="eventsCurrentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <i class="fas fa-calendar-alt me-2"></i>Events List
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="exportEvents()">
+                            <i class="fas fa-download"></i>Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Event Details</th>
+                                    <th>Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Participants</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTable">
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <i class="fas fa-calendar-plus fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No events found</h5>
+                                        <p class="text-muted">Create your first event to get started!</p>
+                                        <button class="btn btn-primary" onclick="showEventModal()">
+                                            <i class="fas fa-plus"></i>Add First Event
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blogs Section -->
+        <div id="blogs-section" class="section d-none">
+            <div class="top-bar">
+                <div class="page-info">
+                    <h1 class="page-title">Blog Management</h1>
+                    <p class="page-subtitle">Create engaging blog posts with rich content and media</p>
+                </div>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="blogsAdminId">ID: 2025#0010</div>
+                        <button class="btn btn-primary" onclick="showBlogModal()">
+                            <i class="fas fa-plus"></i>Add Blog Post
+                        </button>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="blogsCurrentTime"></div>
+                        <div id="blogsCurrentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <i class="fas fa-blog me-2"></i>Blog Posts
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="exportBlogs()">
+                            <i class="fas fa-download"></i>Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Blog Details</th>
+                                    <th>Author & Category</th>
+                                    <th>Published Date</th>
+                                    <th>Status</th>
+                                    <th>Views</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blogsTable">
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <i class="fas fa-pen-alt fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No blog posts found</h5>
+                                        <p class="text-muted">Start sharing knowledge with your first blog post!</p>
+                                        <button class="btn btn-primary" onclick="showBlogModal()">
+                                            <i class="fas fa-plus"></i>Write First Post
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="section d-none">
+            <div class="top-bar">
+                <div class="page-info">
+                    <h1 class="page-title">Results Management</h1>
+                    <p class="page-subtitle">Manage event results, winners, and certificates</p>
+                </div>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="resultsAdminId">ID: 2025#0010</div>
+                        <button class="btn btn-primary" onclick="showResultModal()">
+                            <i class="fas fa-plus"></i>Add Result
+                        </button>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="resultsCurrentTime"></div>
+                        <div id="resultsCurrentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <i class="fas fa-trophy me-2"></i>Event Results
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="exportResults()">
+                            <i class="fas fa-download"></i>Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Winners & Positions</th>
+                                    <th>Event Date</th>
+                                    <th>Certificates</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTable">
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <i class="fas fa-trophy fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No results found</h5>
+                                        <p class="text-muted">Add event results and celebrate winners!</p>
+                                        <button class="btn btn-primary" onclick="showResultModal()">
+                                            <i class="fas fa-plus"></i>Add First Result
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notices Section -->
+        <div id="notices-section" class="section d-none">
+            <div class="top-bar">
+                <div class="page-info">
+                    <h1 class="page-title">Notices & Announcements</h1>
+                    <p class="page-subtitle">Post important announcements and club updates</p>
+                </div>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="noticesAdminId">ID: 2025#0010</div>
+                        <button class="btn btn-primary" onclick="showNoticeModal()">
+                            <i class="fas fa-plus"></i>Add Notice
+                        </button>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="noticesCurrentTime"></div>
+                        <div id="noticesCurrentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <i class="fas fa-bullhorn me-2"></i>Active Notices
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="exportNotices()">
+                            <i class="fas fa-download"></i>Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Notice Details</th>
+                                    <th>Priority</th>
+                                    <th>Published Date</th>
+                                    <th>Expiry Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="noticesTable">
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <i class="fas fa-bullhorn fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No notices found</h5>
+                                        <p class="text-muted">Keep your club informed with important announcements!</p>
+                                        <button class="btn btn-primary" onclick="showNoticeModal()">
+                                            <i class="fas fa-plus"></i>Create First Notice
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div id="team-section" class="section d-none">
+            <div class="top-bar">
+                <div class="page-info">
+                    <h1 class="page-title">Team Management</h1>
+                    <p class="page-subtitle">Manage team members, roles, and organizational structure</p>
+                </div>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="teamAdminId">ID: 2025#0010</div>
+                        <button class="btn btn-primary" onclick="showTeamModal()">
+                            <i class="fas fa-plus"></i>Add Member
+                        </button>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="teamCurrentTime"></div>
+                        <div id="teamCurrentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <i class="fas fa-users me-2"></i>Team Members
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="exportTeam()">
+                            <i class="fas fa-download"></i>Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Photo</th>
+                                    <th>Member Details</th>
+                                    <th>Role & Position</th>
+                                    <th>Academic Info</th>
+                                    <th>Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teamTable">
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <i class="fas fa-user-friends fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No team members found</h5>
+                                        <p class="text-muted">Build your amazing team and showcase their talents!</p>
+                                        <button class="btn btn-primary" onclick="showTeamModal()">
+                                            <i class="fas fa-plus"></i>Add First Member
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submissions Section -->
+        <div id="submissions-section" class="section d-none">
+            <div class="top-bar">
+                <div class="page-info">
+                    <h1 class="page-title">Form Submissions</h1>
+                    <p class="page-subtitle">Monitor and manage all form responses from Superform</p>
+                </div>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="submissionsAdminId">ID: 2025#0010</div>
+                        <button class="btn btn-primary" onclick="refreshSubmissions()">
+                            <i class="fas fa-sync"></i>Refresh
+                        </button>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="submissionsCurrentTime"></div>
+                        <div id="submissionsCurrentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <i class="fas fa-inbox me-2"></i>Submissions Data
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="exportSubmissions()">
+                            <i class="fas fa-download"></i>Export CSV
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Form Name</th>
+                                    <th>Submitted By</th>
+                                    <th>Email</th>
+                                    <th>Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissionsTable">
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No submissions yet</h5>
+                                        <p class="text-muted">Form responses will appear here automatically when received from Superform</p>
+                                        <small class="text-muted">Connected to Superform • Real-time sync enabled</small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -956,7 +1390,7 @@
             <div class="top-bar">
                 <div class="page-info">
                     <h1 class="page-title">Settings & Preferences</h1>
-                    <p class="page-subtitle">Customize your admin panel experience</p>
+                    <p class="page-subtitle">Customize your admin panel experience and manage account</p>
                 </div>
                 <div class="top-actions">
                     <div class="status-info">
@@ -969,156 +1403,591 @@
                 </div>
             </div>
 
-            <div class="settings-grid">
+            <div class="row">
                 <!-- Account Settings -->
-                <div class="settings-card">
-                    <div class="settings-header">
-                        <div class="settings-icon">
-                            <i class="fas fa-user-cog"></i>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <i class="fas fa-user-cog me-2"></i>Account Settings
+                            </div>
                         </div>
-                        <div>
-                            <h5 class="mb-1">Account Settings</h5>
-                            <p class="text-muted small mb-0">Manage your admin account</p>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label class="form-label">Membership ID</label>
+                                <input type="text" class="form-control" id="settingsMembershipId" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Role</label>
+                                <input type="text" class="form-control" value="Administrator" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Session Status</label>
+                                <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                    <span>Current session active</span>
+                                    <span class="badge bg-success">Online</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-danger w-100" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>Sign Out
+                            </button>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Membership ID</label>
-                        <input type="text" class="form-control" id="settingsMembershipId" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Role</label>
-                        <input type="text" class="form-control" value="Administrator" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Session Status</label>
-                        <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
-                            <span>Current session active</span>
-                            <span class="badge bg-success">Online</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-danger w-100" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i>Sign Out
-                    </button>
                 </div>
 
                 <!-- Theme Settings -->
-                <div class="settings-card">
-                    <div class="settings-header">
-                        <div class="settings-icon">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                        <div>
-                            <h5 class="mb-1">Appearance</h5>
-                            <p class="text-muted small mb-0">Customize your interface</p>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Theme Mode</label>
-                        <div class="theme-selector">
-                            <div class="theme-option active" id="lightTheme" onclick="setTheme('light')">
-                                <div class="theme-preview light"></div>
-                                <div>
-                                    <div class="fw-medium">Light</div>
-                                    <small class="text-muted">Default theme</small>
-                                </div>
-                            </div>
-                            <div class="theme-option" id="darkTheme" onclick="setTheme('dark')">
-                                <div class="theme-preview dark"></div>
-                                <div>
-                                    <div class="fw-medium">Dark</div>
-                                    <small class="text-muted">Easy on eyes</small>
-                                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <i class="fas fa-palette me-2"></i>Appearance
                             </div>
                         </div>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="autoThemeSwitch">
-                        <label class="form-check-label" for="autoThemeSwitch">
-                            Auto switch based on system preference
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Notification Settings -->
-                <div class="settings-card">
-                    <div class="settings-header">
-                        <div class="settings-icon">
-                            <i class="fas fa-bell"></i>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label class="form-label">Theme Mode</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="card theme-option p-3 text-center" id="lightTheme" onclick="setTheme('light')" style="cursor: pointer; border: 2px solid var(--sage-green);">
+                                            <i class="fas fa-sun fa-2x mb-2"></i>
+                                            <div class="fw-medium">Light</div>
+                                            <small class="text-muted">Default theme</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card theme-option p-3 text-center" id="darkTheme" onclick="setTheme('dark')" style="cursor: pointer; border: 2px solid var(--border);">
+                                            <i class="fas fa-moon fa-2x mb-2"></i>
+                                            <div class="fw-medium">Dark</div>
+                                            <small class="text-muted">Easy on eyes</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="autoThemeSwitch">
+                                <label class="form-check-label" for="autoThemeSwitch">
+                                    Auto switch based on system preference
+                                </label>
+                            </div>
                         </div>
-                        <div>
-                            <h5 class="mb-1">Notifications</h5>
-                            <p class="text-muted small mb-0">Control your alerts</p>
-                        </div>
-                    </div>
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
-                        <label class="form-check-label" for="emailNotifications">
-                            Email notifications
-                        </label>
-                    </div>
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" id="pushNotifications" checked>
-                        <label class="form-check-label" for="pushNotifications">
-                            Browser notifications
-                        </label>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="soundNotifications">
-                        <label class="form-check-label" for="soundNotifications">
-                            Sound alerts
-                        </label>
                     </div>
                 </div>
 
                 <!-- Data Management -->
-                <div class="settings-card">
-                    <div class="settings-header">
-                        <div class="settings-icon">
-                            <i class="fas fa-database"></i>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <i class="fas fa-database me-2"></i>Data Management
+                            </div>
                         </div>
-                        <div>
-                            <h5 class="mb-1">Data Management</h5>
-                            <p class="text-muted small mb-0">Backup and restore</p>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-primary w-100 mb-3" onclick="exportAllData()">
+                                        <i class="fas fa-download"></i>Export All Data
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-primary w-100 mb-3" onclick="importData()">
+                                        <i class="fas fa-upload"></i>Import Data
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-danger w-100 mb-3" onclick="clearAllData()">
+                                        <i class="fas fa-trash"></i>Clear All Data
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button class="btn btn-outline w-100 mb-3" onclick="exportAllData()">
-                        <i class="fas fa-download"></i>Export All Data
-                    </button>
-                    <button class="btn btn-outline w-100 mb-3" onclick="importData()">
-                        <i class="fas fa-upload"></i>Import Data
-                    </button>
-                    <button class="btn btn-danger w-100" onclick="clearAllData()">
-                        <i class="fas fa-trash"></i>Clear All Data
-                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- Other sections remain the same as previous implementation -->
-        <div id="events-section" class="section d-none">
-            <!-- Events management content -->
-        </div>
-
-        <div id="blogs-section" class="section d-none">
-            <!-- Blogs management content -->
-        </div>
-
-        <div id="results-section" class="section d-none">
-            <!-- Results management content -->
-        </div>
-
-        <div id="notices-section" class="section d-none">
-            <!-- Notices management content -->
-        </div>
-
-        <div id="team-section" class="section d-none">
-            <!-- Team management content -->
-        </div>
-
-        <div id="submissions-section" class="section d-none">
-            <!-- Submissions content -->
-        </div>
     </main>
+
+    <!-- Event Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalTitle">Add Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <input type="hidden" id="eventId">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Event Title *</label>
+                                    <input type="text" class="form-control" id="eventTitle" placeholder="Enter event title" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Event Category *</label>
+                                    <select class="form-control" id="eventCategory" required>
+                                        <option value="">Select Category</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Hackathon">Hackathon</option>
+                                        <option value="Seminar">Seminar</option>
+                                        <option value="Competition">Competition</option>
+                                        <option value="Webinar">Webinar</option>
+                                        <option value="Conference">Conference</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Event Date & Time *</label>
+                                    <input type="datetime-local" class="form-control" id="eventDate" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Location/Platform</label>
+                                    <input type="text" class="form-control" id="eventLocation" placeholder="Venue or online platform">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Registration Fee</label>
+                                    <input type="number" class="form-control" id="eventFee" placeholder="0" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Max Participants</label>
+                                    <input type="number" class="form-control" id="eventMaxParticipants" placeholder="100" min="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Event Description *</label>
+                            <textarea class="form-control" id="eventDescription" rows="4" placeholder="Detailed description of the event" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Registration Link</label>
+                                    <input type="url" class="form-control" id="eventRegistrationLink" placeholder="https://...">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Person</label>
+                                    <input type="text" class="form-control" id="eventContact" placeholder="Contact person name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Event Banner/Image</label>
+                            <div class="image-upload" onclick="document.getElementById('eventImage').click()">
+                                <i class="fas fa-upload fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">Click to upload event banner</p>
+                                <input type="file" id="eventImage" style="display: none;" accept="image/*" onchange="previewImage(this, 'eventImagePreview')">
+                            </div>
+                            <div id="eventImagePreview" class="mt-3"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEvent()">Save Event</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Modal -->
+    <div class="modal fade" id="blogModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="blogModalTitle">Add Blog Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="blogForm">
+                        <input type="hidden" id="blogId">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Blog Title *</label>
+                                    <input type="text" class="form-control" id="blogTitle" placeholder="Enter compelling blog title" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Category *</label>
+                                    <select class="form-control" id="blogCategory" required>
+                                        <option value="">Select Category</option>
+                                        <option value="Programming">Programming</option>
+                                        <option value="Web Development">Web Development</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="AI/ML">AI/ML</option>
+                                        <option value="Tech News">Tech News</option>
+                                        <option value="Tutorials">Tutorials</option>
+                                        <option value="Club Updates">Club Updates</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Author Name *</label>
+                                    <input type="text" class="form-control" id="blogAuthor" placeholder="Author name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Reading Time (minutes)</label>
+                                    <input type="number" class="form-control" id="blogReadingTime" placeholder="5" min="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Blog Excerpt</label>
+                            <textarea class="form-control" id="blogExcerpt" rows="2" placeholder="Brief description that appears in blog listing"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Blog Content *</label>
+                            <div id="blogEditor" style="height: 300px;"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Tags (comma separated)</label>
+                                    <input type="text" class="form-control" id="blogTags" placeholder="programming, web development, tutorial">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Publication Status</label>
+                                    <select class="form-control" id="blogStatus">
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                        <option value="scheduled">Scheduled</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Featured Image</label>
+                            <div class="image-upload" onclick="document.getElementById('blogImage').click()">
+                                <i class="fas fa-upload fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">Click to upload featured image</p>
+                                <input type="file" id="blogImage" style="display: none;" accept="image/*" onchange="previewImage(this, 'blogImagePreview')">
+                            </div>
+                            <div id="blogImagePreview" class="mt-3"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveBlog()">Save Blog Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalTitle">Add Result</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="resultForm">
+                        <input type="hidden" id="resultId">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Event Name *</label>
+                                    <input type="text" class="form-control" id="resultEventName" placeholder="Name of the event" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Event Date</label>
+                                    <input type="date" class="form-control" id="resultEventDate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Event Description</label>
+                            <textarea class="form-control" id="resultEventDescription" rows="2" placeholder="Brief description of the event"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Position Holders *</label>
+                            <div id="positionHolders">
+                                <div class="row mb-2 position-row">
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" placeholder="1st" name="position[]" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" placeholder="Winner Name" name="winner[]" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="College/Organization" name="organization[]">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" placeholder="Prize" name="prize[]">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-success btn-sm" onclick="addPositionRow()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Certificates (Optional)</label>
+                            <input type="file" class="form-control" id="resultCertificates" multiple accept=".pdf,.jpg,.jpeg,.png">
+                            <small class="form-text text-muted">Upload certificates for winners (PDF, JPG, PNG)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Additional Details</label>
+                            <textarea class="form-control" id="resultAdditionalDetails" rows="3" placeholder="Any additional information about the event results"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveResult()">Save Result</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notice Modal -->
+    <div class="modal fade" id="noticeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="noticeModalTitle">Add Notice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="noticeForm">
+                        <input type="hidden" id="noticeId">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Notice Title *</label>
+                                    <input type="text" class="form-control" id="noticeTitle" placeholder="Enter notice title" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Notice Type</label>
+                                    <select class="form-control" id="noticeType">
+                                        <option value="general">General</option>
+                                        <option value="urgent">Urgent</option>
+                                        <option value="event">Event</option>
+                                        <option value="academic">Academic</option>
+                                        <option value="registration">Registration</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notice Content *</label>
+                            <textarea class="form-control" id="noticeContent" rows="5" placeholder="Enter detailed notice content" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Priority Level</label>
+                                    <select class="form-control" id="noticePriority">
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Target Audience</label>
+                                    <select class="form-control" id="noticeAudience">
+                                        <option value="all">All Members</option>
+                                        <option value="students">Students Only</option>
+                                        <option value="faculty">Faculty Only</option>
+                                        <option value="team">Team Members</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input type="date" class="form-control" id="noticeExpiry">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Action Required</label>
+                            <input type="text" class="form-control" id="noticeAction" placeholder="e.g., Register by July 25th">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Information</label>
+                            <input type="text" class="form-control" id="noticeContact" placeholder="Contact person or email">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNotice()">Save Notice</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Modal -->
+    <div class="modal fade" id="teamModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teamModalTitle">Add Team Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="teamForm">
+                        <input type="hidden" id="teamId">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Member Photo</label>
+                                    <div class="image-upload" onclick="document.getElementById('teamPhoto').click()">
+                                        <i class="fas fa-user fa-2x text-muted mb-2"></i>
+                                        <p class="text-muted">Upload photo</p>
+                                        <input type="file" id="teamPhoto" style="display: none;" accept="image/*" onchange="previewImage(this, 'teamPhotoPreview')">
+                                    </div>
+                                    <div id="teamPhotoPreview" class="mt-3"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Full Name *</label>
+                                            <input type="text" class="form-control" id="teamName" placeholder="Enter full name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="teamEmail" placeholder="email@example.com">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="teamPhone" placeholder="+91 9876543210">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">LinkedIn Profile</label>
+                                            <input type="url" class="form-control" id="teamLinkedin" placeholder="https://linkedin.com/in/...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Role *</label>
+                                    <select class="form-control" id="teamRole" required>
+                                        <option value="">Select Role</option>
+                                        <option value="President">President</option>
+                                        <option value="Vice President">Vice President</option>
+                                        <option value="Secretary">Secretary</option>
+                                        <option value="Treasurer">Treasurer</option>
+                                        <option value="Technical Lead">Technical Lead</option>
+                                        <option value="Event Coordinator">Event Coordinator</option>
+                                        <option value="Marketing Head">Marketing Head</option>
+                                        <option value="Design Lead">Design Lead</option>
+                                        <option value="Council Member">Council Member</option>
+                                        <option value="Core Team">Core Team</option>
+                                        <option value="Volunteer">Volunteer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Department</label>
+                                    <select class="form-control" id="teamDepartment">
+                                        <option value="">Select Department</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Mechanical">Mechanical</option>
+                                        <option value="Civil">Civil</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Semester *</label>
+                                    <select class="form-control" id="teamSemester" required>
+                                        <option value="">Select Semester</option>
+                                        <option value="1">1st Semester</option>
+                                        <option value="2">2nd Semester</option>
+                                        <option value="3">3rd Semester</option>
+                                        <option value="4">4th Semester</option>
+                                        <option value="5">5th Semester</option>
+                                        <option value="6">6th Semester</option>
+                                        <option value="7">7th Semester</option>
+                                        <option value="8">8th Semester</option>
+                                        <option value="Alumni">Alumni</option>
+                                        <option value="Faculty">Faculty</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Skills/Expertise</label>
+                                    <input type="text" class="form-control" id="teamSkills" placeholder="JavaScript, Python, React...">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Join Date</label>
+                                    <input type="date" class="form-control" id="teamJoinDate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bio/Description</label>
+                            <textarea class="form-control" id="teamBio" rows="3" placeholder="Brief description about the member"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveTeamMember()">Save Member</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -1128,28 +1997,60 @@
             window.location.href = 'index.html';
         }
 
+        // Global variables
+        let blogEditor;
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             initializeDashboard();
             setupConnectivityMonitoring();
             updateDateTime();
             setInterval(updateDateTime, 1000);
+            initializeQuill();
             loadTheme();
+            loadAllData();
         });
 
         function initializeDashboard() {
             const membershipId = sessionStorage.getItem('membershipId');
             
             // Update all ID displays
-            document.getElementById('adminIdBadge').textContent = `ID: ${membershipId}`;
-            document.getElementById('settingsAdminId').textContent = `ID: ${membershipId}`;
-            document.getElementById('mobileUserId').textContent = `ID: ${membershipId}`;
+            const idElements = [
+                'adminIdBadge', 'eventsAdminId', 'blogsAdminId', 'resultsAdminId', 
+                'noticesAdminId', 'teamAdminId', 'submissionsAdminId', 'settingsAdminId', 'mobileUserId'
+            ];
+            
+            idElements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = `ID: ${membershipId}`;
+                }
+            });
+            
             document.getElementById('userName').textContent = `Admin ${membershipId.slice(-2)}`;
             document.getElementById('userAvatar').textContent = membershipId.slice(-1);
             document.getElementById('settingsMembershipId').value = membershipId;
             
-            loadDashboardData();
             addActivity('Dashboard initialized successfully');
+        }
+
+        function initializeQuill() {
+            if (document.getElementById('blogEditor')) {
+                blogEditor = new Quill('#blogEditor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['blockquote', 'code-block'],
+                            ['link', 'image'],
+                            ['clean']
+                        ]
+                    }
+                });
+            }
         }
 
         // Enhanced DateTime Updates
@@ -1168,11 +2069,27 @@
             });
             
             // Update all time displays
-            document.getElementById('currentTime').textContent = timeString;
-            document.getElementById('currentDate').textContent = dateString;
-            document.getElementById('settingsCurrentTime').textContent = timeString;
-            document.getElementById('settingsCurrentDate').textContent = dateString;
-            document.getElementById('mobileDatetime').textContent = `${timeString}`;
+            const timeElements = [
+                'currentTime', 'eventsCurrentTime', 'blogsCurrentTime', 'resultsCurrentTime',
+                'noticesCurrentTime', 'teamCurrentTime', 'submissionsCurrentTime', 'settingsCurrentTime'
+            ];
+            
+            const dateElements = [
+                'currentDate', 'eventsCurrentDate', 'blogsCurrentDate', 'resultsCurrentDate',
+                'noticesCurrentDate', 'teamCurrentDate', 'submissionsCurrentDate', 'settingsCurrentDate'
+            ];
+            
+            timeElements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) element.textContent = timeString;
+            });
+            
+            dateElements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) element.textContent = dateString;
+            });
+            
+            document.getElementById('mobileDatetime').textContent = timeString;
         }
 
         // Connectivity Monitoring
@@ -1190,15 +2107,12 @@
                 }
             }
 
-            // Initial check
             updateConnectivityStatus();
-
-            // Listen for connectivity changes
             window.addEventListener('online', updateConnectivityStatus);
             window.addEventListener('offline', updateConnectivityStatus);
         }
 
-        // Mobile sidebar functions
+        // Navigation functions
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
@@ -1216,25 +2130,21 @@
             document.getElementById('menuIcon').className = 'fas fa-bars';
         }
 
-        // Enhanced Section Navigation
+        // Section Navigation
         function showSection(sectionName, element) {
-            // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.add('d-none');
             });
 
-            // Show target section
             const targetSection = document.getElementById(sectionName + '-section');
             if (targetSection) {
                 targetSection.classList.remove('d-none');
             }
 
-            // Update navigation states
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
 
-            // Set active state
             if (element) {
                 element.classList.add('active');
                 const correspondingNavs = document.querySelectorAll(
@@ -1243,17 +2153,39 @@
                 correspondingNavs.forEach(nav => nav.classList.add('active'));
             }
 
-            // Close mobile sidebar after navigation
             if (window.innerWidth <= 768) {
                 closeSidebar();
             }
 
-            // Update datetime for different sections
             updateDateTime();
+            loadSectionData(sectionName);
             addActivity(`Navigated to ${sectionName.charAt(0).toUpperCase() + sectionName.slice(1)}`);
         }
 
-        // Enhanced Theme Management
+        function loadSectionData(sectionName) {
+            switch(sectionName) {
+                case 'events':
+                    loadEvents();
+                    break;
+                case 'blogs':
+                    loadBlogs();
+                    break;
+                case 'results':
+                    loadResults();
+                    break;
+                case 'notices':
+                    loadNotices();
+                    break;
+                case 'team':
+                    loadTeam();
+                    break;
+                case 'submissions':
+                    loadSubmissions();
+                    break;
+            }
+        }
+
+        // Theme Management
         function loadTheme() {
             const savedTheme = localStorage.getItem('bvec-theme') || 'light';
             setTheme(savedTheme);
@@ -1265,86 +2197,15 @@
             
             // Update theme selector
             document.querySelectorAll('.theme-option').forEach(option => {
-                option.classList.remove('active');
+                option.style.border = '2px solid var(--border)';
             });
             
-            if (theme === 'dark') {
-                document.getElementById('darkTheme').classList.add('active');
-            } else {
-                document.getElementById('lightTheme').classList.add('active');
+            const activeTheme = document.getElementById(theme + 'Theme');
+            if (activeTheme) {
+                activeTheme.style.border = '2px solid var(--sage-green)';
             }
             
             addActivity(`Switched to ${theme} theme`);
-        }
-
-        // Settings Functions
-        function exportAllData() {
-            const data = {
-                events: JSON.parse(localStorage.getItem('events') || '[]'),
-                blogs: JSON.parse(localStorage.getItem('blogs') || '[]'),
-                results: JSON.parse(localStorage.getItem('results') || '[]'),
-                notices: JSON.parse(localStorage.getItem('notices') || '[]'),
-                team: JSON.parse(localStorage.getItem('team') || '[]'),
-                activities: JSON.parse(localStorage.getItem('activities') || '[]'),
-                timestamp: new Date().toISOString()
-            };
-
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `bvec-data-backup-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            addActivity('Exported all data');
-        }
-
-        function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        try {
-                            const data = JSON.parse(e.target.result);
-                            
-                            // Validate data structure
-                            if (data.events) localStorage.setItem('events', JSON.stringify(data.events));
-                            if (data.blogs) localStorage.setItem('blogs', JSON.stringify(data.blogs));
-                            if (data.results) localStorage.setItem('results', JSON.stringify(data.results));
-                            if (data.notices) localStorage.setItem('notices', JSON.stringify(data.notices));
-                            if (data.team) localStorage.setItem('team', JSON.stringify(data.team));
-                            
-                            loadDashboardData();
-                            addActivity('Imported data successfully');
-                            alert('Data imported successfully!');
-                        } catch (error) {
-                            alert('Invalid file format. Please select a valid backup file.');
-                        }
-                    };
-                    reader.readAsText(file);
-                }
-            };
-            input.click();
-        }
-
-        function clearAllData() {
-            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
-                localStorage.removeItem('events');
-                localStorage.removeItem('blogs');
-                localStorage.removeItem('results');
-                localStorage.removeItem('notices');
-                localStorage.removeItem('team');
-                localStorage.removeItem('activities');
-                
-                loadDashboardData();
-                addActivity('All data cleared');
-                alert('All data has been cleared.');
-            }
         }
 
         // Form Creation (Superform integration)
@@ -1358,108 +2219,194 @@
             addActivity('Previewed main website');
         }
 
-        // Dashboard Stats Update
-        function loadDashboardData() {
+        // Image Preview Function
+        function previewImage(input, previewId) {
+            const previewContainer = document.getElementById(previewId);
+            previewContainer.innerHTML = '';
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    img.style.maxWidth = '100%';
+                    img.style.height = 'auto';
+                    img.style.borderRadius = '8px';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Events CRUD Operations
+        function showEventModal(eventId = null) {
+            const modal = new bootstrap.Modal(document.getElementById('eventModal'));
+            const title = document.getElementById('eventModalTitle');
+            
+            if (eventId) {
+                title.textContent = 'Edit Event';
+                const events = JSON.parse(localStorage.getItem('events') || '[]');
+                const event = events.find(e => e.id === eventId);
+                if (event) {
+                    document.getElementById('eventId').value = event.id;
+                    document.getElementById('eventTitle').value = event.title;
+                    document.getElementById('eventCategory').value = event.category || '';
+                    document.getElementById('eventDate').value = event.date;
+                    document.getElementById('eventLocation').value = event.location || '';
+                    document.getElementById('eventFee').value = event.fee || '';
+                    document.getElementById('eventMaxParticipants').value = event.maxParticipants || '';
+                    document.getElementById('eventDescription').value = event.description;
+                    document.getElementById('eventRegistrationLink').value = event.registrationLink || '';
+                    document.getElementById('eventContact').value = event.contact || '';
+                }
+            } else {
+                title.textContent = 'Add Event';
+                document.getElementById('eventForm').reset();
+                document.getElementById('eventId').value = '';
+                document.getElementById('eventImagePreview').innerHTML = '';
+            }
+            
+            modal.show();
+        }
+
+        function saveEvent() {
+            const eventId = document.getElementById('eventId').value;
+            const title = document.getElementById('eventTitle').value;
+            const category = document.getElementById('eventCategory').value;
+            const date = document.getElementById('eventDate').value;
+            const location = document.getElementById('eventLocation').value;
+            const fee = document.getElementById('eventFee').value;
+            const maxParticipants = document.getElementById('eventMaxParticipants').value;
+            const description = document.getElementById('eventDescription').value;
+            const registrationLink = document.getElementById('eventRegistrationLink').value;
+            const contact = document.getElementById('eventContact').value;
+            const imageFile = document.getElementById('eventImage').files[0];
+            
+            if (!title || !category || !date || !description) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            let events = JSON.parse(localStorage.getItem('events') || '[]');
+            
+            const eventData = {
+                id: eventId || 'event_' + Date.now(),
+                title,
+                category,
+                date,
+                location,
+                fee: parseInt(fee) || 0,
+                maxParticipants: parseInt(maxParticipants) || null,
+                description,
+                registrationLink,
+                contact,
+                image: imageFile ? URL.createObjectURL(imageFile) : '',
+                status: 'active',
+                participants: 0,
+                created: new Date().toISOString()
+            };
+
+            if (eventId) {
+                const index = events.findIndex(e => e.id === eventId);
+                events[index] = eventData;
+                addActivity(`Updated event: ${title}`);
+            } else {
+                events.push(eventData);
+                addActivity(`Created new event: ${title}`);
+            }
+
+            localStorage.setItem('events', JSON.stringify(events));
+            loadEvents();
+            bootstrap.Modal.getInstance(document.getElementById('eventModal')).hide();
+            updateDashboardStats();
+        }
+
+        function deleteEvent(eventId) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                let events = JSON.parse(localStorage.getItem('events') || '[]');
+                const event = events.find(e => e.id === eventId);
+                events = events.filter(e => e.id !== eventId);
+                localStorage.setItem('events', JSON.stringify(events));
+                loadEvents();
+                addActivity(`Deleted event: ${event?.title || 'Unknown'}`);
+                updateDashboardStats();
+            }
+        }
+
+        function loadEvents() {
             const events = JSON.parse(localStorage.getItem('events') || '[]');
-            const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
-            const team = JSON.parse(localStorage.getItem('team') || '[]');
-            const notices = JSON.parse(localStorage.getItem('notices') || '[]');
+            const tbody = document.getElementById('eventsTable');
             
-            document.getElementById('eventsCount').textContent = events.length;
-            document.getElementById('blogsCount').textContent = blogs.length;
-            document.getElementById('teamCount').textContent = team.length;
-            document.getElementById('noticesCount').textContent = notices.filter(n => n.status === 'active').length;
-            
-            loadRecentActivities();
-        }
-
-        // Activity Tracking
-        function addActivity(activity) {
-            const activities = JSON.parse(localStorage.getItem('activities') || '[]');
-            activities.unshift({
-                activity: activity,
-                timestamp: new Date().toISOString(),
-                user: sessionStorage.getItem('membershipId')
-            });
-
-            if (activities.length > 50) activities.splice(50);
-            localStorage.setItem('activities', JSON.stringify(activities));
-            loadRecentActivities();
-        }
-
-        function loadRecentActivities() {
-            const activities = JSON.parse(localStorage.getItem('activities') || '[]');
-            const container = document.getElementById('recentActivities');
-            
-            if (activities.length === 0) {
-                container.innerHTML = '<p class="text-muted">No recent activities</p>';
+            if (events.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="fas fa-calendar-plus fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No events found</h5>
+                            <p class="text-muted">Create your first event to get started!</p>
+                            <button class="btn btn-primary" onclick="showEventModal()">
+                                <i class="fas fa-plus"></i>Add First Event
+                            </button>
+                        </td>
+                    </tr>`;
                 return;
             }
 
             let html = '';
-            activities.slice(0, 5).forEach(activity => {
-                const timeAgo = getTimeAgo(new Date(activity.timestamp));
+            events.forEach(event => {
+                const eventDate = new Date(event.date);
+                const isUpcoming = eventDate > new Date();
+                const formattedDate = eventDate.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                const formattedTime = eventDate.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
                 html += `
-                    <div class="d-flex align-items-center mb-3 p-3 border-start border-3 border-primary bg-light rounded">
-                        <i class="fas fa-circle text-primary me-3" style="font-size: 0.6rem;"></i>
-                        <div class="flex-grow-1">
-                            <div class="fw-medium">${activity.activity}</div>
-                            <small class="text-muted">${timeAgo} by ${activity.user}</small>
-                        </div>
-                    </div>
+                    <tr>
+                        <td>
+                            <div class="fw-bold">${event.title}</div>
+                            <small class="text-muted">
+                                <span class="badge bg-secondary me-1">${event.category}</span>
+                                ${event.description.substring(0, 50)}...
+                            </small>
+                            ${event.location ? `<br><small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>${event.location}</small>` : ''}
+                        </td>
+                        <td>
+                            <div class="fw-medium">${formattedDate}</div>
+                            <small class="text-muted">${formattedTime}</small>
+                            ${event.fee > 0 ? `<br><small class="text-success">Fee: ₹${event.fee}</small>` : '<br><small class="text-success">Free Event</small>'}
+                        </td>
+                        <td>
+                            <span class="badge ${isUpcoming ? 'bg-success' : 'bg-secondary'}">
+                                ${isUpcoming ? 'Upcoming' : 'Completed'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="fw-medium">${event.participants || 0}</div>
+                            ${event.maxParticipants ? `<small class="text-muted">/ ${event.maxParticipants}</small>` : '<small class="text-muted">Unlimited</small>'}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="showEventModal('${event.id}')" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteEvent('${event.id}')" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
                 `;
             });
-            container.innerHTML = html;
-        }
-
-        function getTimeAgo(date) {
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - date) / 1000);
             
-            if (diffInSeconds < 60) return 'Just now';
-            if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + 'm ago';
-            if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + 'h ago';
-            return Math.floor(diffInSeconds / 86400) + 'd ago';
+            tbody.innerHTML = html;
         }
 
-        function logout() {
-            if (confirm('Are you sure you want to sign out?')) {
-                addActivity('Admin logged out');
-                sessionStorage.clear();
-                window.location.href = 'index.html';
-            }
-        }
-
-        // Initialize activities
-        if (!localStorage.getItem('activities')) {
-            addActivity('BVEC CODE Club CMS initialized');
-        }
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                closeSidebar();
-            }
-        });
-
-        // Auto theme detection
-        const autoThemeSwitch = document.getElementById('autoThemeSwitch');
-        if (autoThemeSwitch) {
-            autoThemeSwitch.addEventListener('change', function() {
-                if (this.checked) {
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    setTheme(prefersDark ? 'dark' : 'light');
-                }
-            });
-        }
-
-        // System theme change listener
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-            const autoTheme = document.getElementById('autoThemeSwitch');
-            if (autoTheme && autoTheme.checked) {
-                setTheme(e.matches ? 'dark' : 'light');
-            }
-        });
-    </script>
-</body>
-</html>
+        function exportEvents() {
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            if (events.length ===
