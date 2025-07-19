@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form - BVEC CODE Club</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .form-body {
+            padding: 40px;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            margin-bottom: 20px;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-weight: bold;
+            color: white;
+            width: 100%;
+        }
+        
+        .field-group {
+            margin-bottom: 25px;
+        }
+        
+        .field-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h1 id="formTitle">Loading Form...</h1>
+            <p id="formDescription" class="mb-0 opacity-75"></p>
+        </div>
+        
+        <div class="form-body">
+            <form id="dynamicForm">
+                <div id="formFields">
+                    <div class="text-center">
+                        <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                        <p class="text-muted mt-3">Loading form...</p>
+                    </div>
+                </div>
+                
+                <div id="submitSection" class="d-none">
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Form
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-5">
+                    <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                    <h4>Form Submitted Successfully!</h4>
+                    <p class="text-muted">Thank you for your submission. We have received your response.</p>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadForm();
+        });
+
+        function loadForm() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const formId = urlParams.get('id');
+            
+            if (!formId) {
+                document.getElementById('formFields').innerHTML = '<div class="alert alert-danger">Form not found</div>';
+                return;
+            }
+            
+            // Load form from localStorage (in production, fetch from API)
+            const savedForms = JSON.parse(localStorage.getItem('savedForms') || '[]');
+            const form = savedForms.find(f => f.id === formId);
+            
+            if (!form) {
+                document.getElementById('formFields').innerHTML = '<div class="alert alert-danger">Form not found</div>';
+                return;
+            }
+            
+            // Set form title and description
+            document.getElementById('formTitle').textContent = form.title;
+            document.getElementById('formDescription').textContent = form.description;
+            
+            // Generate form fields
+            let fieldsHTML = '';
+            form.fields.forEach(field => {
+                fieldsHTML += generateFieldHTML(field);
+            });
+            
+            document.getElementById('formFields').innerHTML = fieldsHTML;
+            document.getElementById('submitSection').classList.remove('d-none');
+            
+            // Set up form submission
+            document.getElementById('dynamicForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitForm(form);
+            });
+        }
+
+        function generateFieldHTML(field) {
+            let html = '<div class="field-group">';
+            
+            switch(field.type) {
+                case 'text':
+                case 'email':
+                case 'number':
+                    html += `
+                        <label class="field-label ${field.required ? 'required-field' : ''}">${field.label}</label>
+                        <input type="${field.type}" class="form-control" name="${field.id}" 
+                               ${field.required ? 'required' : ''}>
+                    `;
+                    break;
+                    
+                case 'textarea':
+                    html += `
+                        <label class="field-label ${field.required ? 'required-field' : ''}">${field.label}</label>
+                        <textarea class="form-control" name="${field.id}" rows="4" 
+                                  ${field.required ? 'required' : ''}></textarea>
+                    `;
+                    break;
+                    
+                case 'select':
+                    html += `
+                        <label class="field-label ${field.required ? 'required-field' : ''}">${field.label}</label>
+                        <select class="form-control" name="${field.id}" ${field.required ? 'required' : ''}>
+                            <option value="">Select an option</option>
+                    `;
+                    if (field.options) {
+                        field.options.forEach(option => {
+                            html += `<option value="${option}">${option}</option>`;
+                        });
+                    }
+                    html += '</select>';
+                    break;
+                    
+                case 'radio':
+                    html += `<label class="field-label ${field.required ? 'required-field' : ''}">${field.label}</label>`;
+                    if (field.options) {
+                        field.options.forEach((option, index) => {
+                            html += `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="${field.id}" 
+                                           id="${field.id}_${index}" value="${option}" 
+                                           ${field.required && index === 0 ? 'required' : ''}>
+                                    <label class="form-check-label" for="${field.id}_${index}">
+                                        ${option}
+                                    </label>
+                                </div>
+                            `;
+                        });
+                    }
+                    break;
+                    
+                case 'checkbox':
+                    html += `<label class="field-label">${field.label}</label>`;
+                    if (field.options) {
+                        field.options.forEach((option, index) => {
+                            html += `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="${field.id}[]" 
+                                           id="${field.id}_${index}" value="${option}">
+                                    <label class="form-check-label" for="${field.id}_${index}">
+                                        ${option}
+                                    </label>
+                                </div>
+                            `;
+                        });
+                    }
+                    break;
+                    
+                case 'file':
+                    html += `
+                        <label class="field-label ${field.required ? 'required-field' : ''}">${field.label}</label>
+                        <input type="file" class="form-control" name="${field.id}" 
+                               ${field.required ? 'required' : ''}>
+                    `;
+                    break;
+                    
+                case 'date':
+                    html += `
+                        <label class="field-label ${field.required ? 'required-field' : ''}">${field.label}</label>
+                        <input type="date" class="form-control" name="${field.id}" 
+                               ${field.required ? 'required' : ''}>
+                    `;
+                    break;
+                    
+                case 'heading':
+                    html += `<h3 class="mt-4 mb-3">${field.label}</h3>`;
+                    break;
+                    
+                case 'paragraph':
+                    html += `<p class="text-muted">${field.label}</p>`;
+                    break;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        function submitForm(form) {
+            const formData = new FormData(document.getElementById('dynamicForm'));
+            const data = {};
+            
+            // Process form data
+            for (let [key, value] of formData.entries()) {
+                if (key.endsWith('[]')) {
+                    // Handle checkbox arrays
+                    const cleanKey = key.slice(0, -2);
+                    if (!data[cleanKey]) {
+                        data[cleanKey] = [];
+                    }
+                    data[cleanKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Create submission record
+            const submission = {
+                id: 'sub_' + Date.now(),
+                formId: form.id,
+                formTitle: form.title,
+                data: data,
+                submitted: new Date().toISOString()
+            };
+            
+            // Save submission (in production, send to backend/Google Sheets)
+            let submissions = JSON.parse(localStorage.getItem('formSubmissions') || '[]');
+            submissions.push(submission);
+            localStorage.setItem('formSubmissions', JSON.stringify(submissions));
+            
+            // If Google Sheets URL is provided, send data there
+            if (form.sheetUrl) {
+                sendToGoogleSheets(form.sheetUrl, data);
+            }
+            
+            // Show success message
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+            
+            // Reset form
+            document.getElementById('dynamicForm').reset();
+        }
+
+        function sendToGoogleSheets(sheetUrl, data) {
+            // This is a simplified example
+            // In production, you would use Google Sheets API or a service like SheetDB
+            console.log('Sending to Google Sheets:', sheetUrl, data);
+            
+            // Example using fetch to a Google Apps Script endpoint
+            /*
+            fetch(sheetUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                console.log('Data sent to Google Sheets successfully');
+            }).catch(error => {
+                console.error('Error sending to Google Sheets:', error);
+            });
+            */
+        }
+    </script>
+</body>
+</html>
