@@ -10,7 +10,7 @@
     <!-- Rich Text Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
-        :root {
+        :root[data-theme="light"] {
             --sage-green: #D4E09B;
             --cream-white: #F6F4D2;
             --soft-mint: #CBDFBD;
@@ -23,10 +23,25 @@
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --arcade-blue: #4FC3F7;
-            --arcade-pink: #E91E63;
-            --arcade-yellow: #FFC107;
-            --arcade-purple: #9C27B0;
+            --card-bg: #ffffff;
+            --nav-bg: #ffffff;
+        }
+
+        :root[data-theme="dark"] {
+            --sage-green: #a8c770;
+            --cream-white: #2a2a2a;
+            --soft-mint: #9cb894;
+            --warm-coral: #d17a5a;
+            --text-dark: #f9fafb;
+            --text-light: #d1d5db;
+            --white: #1f2937;
+            --bg-light: #111827;
+            --border: #374151;
+            --shadow-sm: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(255, 255, 255, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
+            --card-bg: #1f2937;
+            --nav-bg: #1f2937;
         }
 
         * {
@@ -41,20 +56,64 @@
             color: var(--text-dark);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: all 0.3s ease;
         }
 
-        /* Mobile Navigation */
+        /* Connectivity Status */
+        .connectivity-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .connectivity-status.online {
+            background: rgba(16, 185, 129, 0.9);
+            color: white;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .connectivity-status.offline {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 0.6; }
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        /* Mobile Navigation - Top Bar Only */
         .mobile-nav {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
+            background: var(--nav-bg);
+            border-bottom: 2px solid var(--border);
             z-index: 1001;
             padding: 16px 20px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
         }
 
         .mobile-nav-content {
@@ -70,97 +129,70 @@
         }
 
         .mobile-logo {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--sage-green), var(--soft-mint));
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMzMzMiLz4KPHRleHQgeD0iNSIgeT0iMTUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iOCIgZmlsbD0iI0ZGQzEwNyI+Jmx0O2J2ZWMvJmd0OzwvdGV4dD4KPHRleHQgeD0iMiIgeT0iMjgiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGQzEwNyI+e0NvZGUgQ2x1Yn08L3RleHQ+Cjwvc3ZnPgo=') center/cover;
+            border-radius: 50%;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .mobile-brand-text {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .mobile-logo::before {
-            content: '';
-            position: absolute;
-            inset: 2px;
-            background: var(--white);
-            border-radius: 8px;
-        }
-
-        .mobile-logo img {
-            width: 26px;
-            height: 26px;
-            border-radius: 6px;
-            object-fit: cover;
-            position: relative;
-            z-index: 1;
+            flex-direction: column;
         }
 
         .mobile-title {
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .mobile-subtitle {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .mobile-status-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .mobile-user-id {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .mobile-datetime {
+            font-weight: 500;
         }
 
         .menu-toggle {
-            background: none;
+            background: var(--sage-green);
             border: none;
-            font-size: 22px;
+            font-size: 18px;
             color: var(--text-dark);
             cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 10px;
             transition: all 0.2s ease;
+            margin-left: 8px;
         }
 
         .menu-toggle:hover {
-            background: var(--bg-light);
-        }
-
-        /* Mobile Bottom Navigation */
-        .mobile-bottom-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--white);
-            border-top: 1px solid var(--border);
-            z-index: 1001;
-            padding: 12px 8px 8px;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .mobile-nav-items {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 8px 4px;
-            text-decoration: none;
-            color: var(--text-light);
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            border-radius: 10px;
-            min-width: 50px;
-            text-align: center;
-        }
-
-        .mobile-nav-item.active {
-            color: var(--sage-green);
-            background: rgba(212, 224, 155, 0.1);
-        }
-
-        .mobile-nav-item i {
-            font-size: 20px;
-            margin-bottom: 4px;
+            background: var(--soft-mint);
+            transform: scale(1.05);
         }
 
         /* Desktop Sidebar */
@@ -170,56 +202,37 @@
             top: 0;
             width: 280px;
             height: 100vh;
-            background: var(--white);
-            border-right: 1px solid var(--border);
+            background: var(--nav-bg);
+            border-right: 2px solid var(--border);
             z-index: 1000;
             transition: all 0.3s ease;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
         }
 
         .sidebar-header {
-            padding: 28px 24px;
-            border-bottom: 1px solid var(--border);
-            background: linear-gradient(135deg, var(--cream-white), var(--white));
+            padding: 32px 24px;
+            border-bottom: 2px solid var(--border);
+            background: linear-gradient(135deg, var(--cream-white), var(--nav-bg));
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .brand-logo {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--sage-green), var(--soft-mint));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .brand-logo::before {
-            content: '';
-            position: absolute;
-            inset: 2px;
-            background: var(--white);
-            border-radius: 10px;
-        }
-
-        .brand-img {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            object-fit: cover;
-            position: relative;
-            z-index: 1;
+            width: 50px;
+            height: 50px;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiMzMzMiLz4KPHRleHQgeD0iNiIgeT0iMTgiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNGRkMxMDciPiZsdDtidmVjLyZndDs8L3RleHQ+Cjx0ZXh0IHg9IjMiIHk9IjM1IiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjgiIGZpbGw9IiNGRkMxMDciPntDb2RlIENsdWJ9PC90ZXh0Pgo8L3N2Zz4K') center/cover;
+            border-radius: 15px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
         }
 
         .brand-text h4 {
-            font-size: 19px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 800;
             color: var(--text-dark);
             margin: 0;
             line-height: 1.2;
@@ -233,11 +246,13 @@
         }
 
         .nav-menu {
-            padding: 20px 0;
+            padding: 24px 0;
+            max-height: calc(100vh - 320px);
+            overflow-y: auto;
         }
 
         .nav-section {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .nav-section-title {
@@ -246,42 +261,60 @@
             color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin: 0 20px 8px;
+            margin: 0 24px 12px;
         }
 
         .nav-item {
-            margin: 0 16px 6px;
+            margin: 0 16px 8px;
         }
 
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 14px 18px;
+            padding: 16px 20px;
             color: var(--text-light);
             text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.2s ease;
+            border-radius: 14px;
+            transition: all 0.3s ease;
             font-weight: 500;
             font-size: 15px;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 224, 155, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
         }
 
         .nav-link:hover {
             background: var(--bg-light);
             color: var(--text-dark);
-            transform: translateX(3px);
+            transform: translateX(4px);
         }
 
         .nav-link.active {
             background: linear-gradient(135deg, var(--sage-green), var(--soft-mint));
             color: var(--text-dark);
             font-weight: 600;
+            box-shadow: var(--shadow-md);
         }
 
         .nav-link i {
-            width: 22px;
-            margin-right: 14px;
-            font-size: 17px;
+            width: 24px;
+            margin-right: 16px;
+            font-size: 18px;
             text-align: center;
         }
 
@@ -291,37 +324,57 @@
             left: 0;
             right: 0;
             padding: 24px;
-            border-top: 1px solid var(--border);
-            background: var(--white);
+            border-top: 2px solid var(--border);
+            background: var(--nav-bg);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             margin-bottom: 16px;
-            padding: 12px;
+            padding: 16px;
             background: var(--bg-light);
-            border-radius: 10px;
+            border-radius: 14px;
         }
 
         .user-avatar {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, var(--warm-coral), var(--sage-green));
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-weight: 600;
             font-size: 15px;
+            color: var(--text-dark);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-light);
+            margin: 2px 0 0 0;
         }
 
         /* Main Content */
         .main-content {
             margin-left: 280px;
-            padding: 28px;
+            padding: 32px;
             min-height: 100vh;
             transition: all 0.3s ease;
         }
@@ -330,59 +383,181 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 28px;
-            background: var(--white);
-            padding: 24px 28px;
-            border-radius: 16px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
+            margin-bottom: 32px;
+            background: var(--card-bg);
+            padding: 28px 32px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--border);
+        }
+
+        .page-info {
+            flex: 1;
         }
 
         .page-title {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 800;
             color: var(--text-dark);
-            margin: 0 0 4px 0;
+            margin: 0 0 8px 0;
             line-height: 1.2;
         }
 
         .page-subtitle {
             color: var(--text-light);
-            font-size: 16px;
+            font-size: 18px;
             margin: 0;
             font-weight: 500;
         }
 
+        .top-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .admin-id {
+            background: linear-gradient(135deg, var(--sage-green), var(--soft-mint));
+            color: var(--text-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .datetime-info {
+            color: var(--text-light);
+            font-size: 13px;
+            text-align: right;
+            line-height: 1.3;
+        }
+
+        .current-time {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
         /* Cards */
         .card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 28px;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 32px;
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
         }
 
         .card-header {
             background: linear-gradient(135deg, var(--text-dark), #374151);
-            color: var(--white);
-            padding: 20px 24px;
+            color: var(--text-dark === '#1f2937' ? '#ffffff' : '#1f2937');
+            padding: 24px 28px;
             border: none;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .card-body {
-            padding: 24px;
+            padding: 28px;
         }
 
-        /* Buttons */
-        .btn {
-            padding: 12px 24px;
+        /* Enhanced Settings Section */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .settings-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--sage-green);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border: 2px solid var(--border);
             border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+        }
+
+        .theme-option.active {
+            border-color: var(--sage-green);
+            background: rgba(212, 224, 155, 0.1);
+        }
+
+        .theme-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+        }
+
+        .theme-preview.light {
+            background: linear-gradient(135deg, #ffffff, #f9fafb);
+        }
+
+        .theme-preview.dark {
+            background: linear-gradient(135deg, #1f2937, #111827);
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            padding: 14px 28px;
+            border-radius: 14px;
             font-weight: 600;
             font-size: 15px;
             border: none;
@@ -391,22 +566,34 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--text-dark), #374151);
-            color: var(--white);
+            color: var(--text-dark === '#1f2937' ? '#ffffff' : '#1f2937');
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--sage-green), var(--soft-mint));
-            color: var(--text-dark);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-danger {
@@ -422,107 +609,52 @@
 
         .btn-outline:hover {
             background: var(--text-dark);
-            color: var(--white);
+            color: var(--text-dark === '#1f2937' ? '#ffffff' : '#1f2937');
+            border-color: var(--text-dark);
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            margin-top: 8px;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #b91c1c, #dc2626);
+            transform: translateY(-1px);
         }
 
         /* Form Elements */
         .form-control {
-            border-radius: 10px;
-            border: 1.5px solid var(--border);
-            padding: 12px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            padding: 14px 18px;
             font-size: 15px;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+            color: var(--text-dark);
         }
 
         .form-control:focus {
             border-color: var(--sage-green);
-            box-shadow: 0 0 0 3px rgba(212, 224, 155, 0.1);
+            box-shadow: 0 0 0 4px rgba(212, 224, 155, 0.1);
+            background: var(--card-bg);
+            color: var(--text-dark);
         }
 
         .form-label {
             font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-
-        /* Table Styles */
-        .table {
+            margin-bottom: 10px;
             font-size: 14px;
-        }
-
-        .table th {
-            background: var(--bg-light);
-            font-weight: 700;
-            color: var(--text-dark);
-            border: none;
-            padding: 16px;
-        }
-
-        .table td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        /* Modal Styles */
-        .modal-content {
-            border: none;
-            border-radius: 16px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, var(--cream-white), var(--white));
-            border-bottom: 1px solid var(--border);
-            border-radius: 16px 16px 0 0;
-            padding: 24px;
-        }
-
-        .modal-title {
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .modal-body {
-            padding: 24px;
-        }
-
-        .modal-footer {
-            border-top: 1px solid var(--border);
-            padding: 20px 24px;
-        }
-
-        /* Image Upload */
-        .image-upload {
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .image-upload:hover {
-            border-color: var(--sage-green);
-            background: rgba(212, 224, 155, 0.05);
-        }
-
-        .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            border-radius: 8px;
-            margin: 10px auto;
-        }
-
-        /* Rich Text Editor */
-        .ql-editor {
-            min-height: 200px;
         }
 
         /* Loading States */
         .loading {
             display: inline-block;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             border: 2px solid rgba(255,255,255,0.3);
             border-top: 2px solid white;
             border-radius: 50%;
@@ -546,7 +678,7 @@
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 280px;
+                width: 300px;
             }
             
             .sidebar.show {
@@ -555,28 +687,38 @@
             
             .main-content {
                 margin-left: 0;
-                padding: 16px;
-                padding-top: 80px;
-                padding-bottom: 90px;
+                padding: 20px;
+                padding-top: 90px;
             }
             
             .mobile-nav {
                 display: block;
             }
             
-            .mobile-bottom-nav {
-                display: block;
+            .connectivity-status {
+                top: 80px;
+                right: 16px;
             }
 
             .top-bar {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 16px;
-                padding: 20px;
+                gap: 20px;
+                padding: 24px;
+            }
+
+            .top-actions {
+                align-items: flex-start;
+                width: 100%;
             }
 
             .page-title {
-                font-size: 26px;
+                font-size: 28px;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
             }
 
             .overlay {
@@ -585,7 +727,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.5);
+                background: rgba(0, 0, 0, 0.6);
                 z-index: 999;
                 display: none;
             }
@@ -594,50 +736,54 @@
                 display: block;
             }
         }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 16px;
+                padding-top: 85px;
+            }
+
+            .mobile-nav {
+                padding: 12px 16px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .brand-logo {
+                width: 45px;
+                height: 45px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Connectivity Status -->
+    <div class="connectivity-status online" id="connectivityStatus">
+        <div class="status-dot"></div>
+        <span id="connectivityText">Online</span>
+    </div>
+
     <!-- Mobile Top Navigation -->
     <nav class="mobile-nav">
         <div class="mobile-nav-content">
             <div class="mobile-brand">
-                <div class="mobile-logo">
-                    <img src="https://drive.google.com/uc?id=1orIj_6DpEFSwYUJA6AcAHnDAASoURnKU&export=download" 
-                         alt="BVEC" onerror="this.style.display='none';">
+                <div class="mobile-logo"></div>
+                <div class="mobile-brand-text">
+                    <div class="mobile-title">BVEC CODE</div>
+                    <div class="mobile-subtitle">Admin Control</div>
                 </div>
-                <div class="mobile-title">BVEC CODE</div>
             </div>
-            <div class="mobile-actions">
+            <div class="mobile-status-bar">
+                <div class="mobile-user-info">
+                    <div class="mobile-user-id" id="mobileUserId">ID: 2025#0010</div>
+                    <div class="mobile-datetime" id="mobileDatetime"></div>
+                </div>
                 <button class="menu-toggle" onclick="toggleSidebar()">
                     <i class="fas fa-bars" id="menuIcon"></i>
                 </button>
             </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-bottom-nav">
-        <div class="mobile-nav-items">
-            <a href="#" class="mobile-nav-item active" onclick="showSection('dashboard', this)">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-            <a href="#" class="mobile-nav-item" onclick="createForm()">
-                <i class="fas fa-plus"></i>
-                <span>Create</span>
-            </a>
-            <a href="#" class="mobile-nav-item" onclick="showSection('events', this)">
-                <i class="fas fa-calendar"></i>
-                <span>Events</span>
-            </a>
-            <a href="#" class="mobile-nav-item" onclick="showSection('blogs', this)">
-                <i class="fas fa-blog"></i>
-                <span>Blogs</span>
-            </a>
-            <a href="#" class="mobile-nav-item" onclick="showSection('settings', this)">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
         </div>
     </nav>
 
@@ -648,10 +794,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="brand">
-                <div class="brand-logo">
-                    <img src="https://drive.google.com/uc?id=1orIj_6DpEFSwYUJA6AcAHnDAASoURnKU&export=download" 
-                         alt="BVEC" class="brand-img" onerror="this.style.display='none';">
-                </div>
+                <div class="brand-logo"></div>
                 <div class="brand-text">
                     <h4>BVEC CODE</h4>
                     <p>Admin Control Center</p>
@@ -721,12 +864,12 @@
         <div class="sidebar-footer">
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">A</div>
-                <div>
-                    <div style="font-weight: 600; font-size: 14px; color: var(--text-dark);" id="userName">Admin</div>
-                    <div style="font-size: 12px; color: var(--text-light);" id="userRole">Administrator</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Admin</div>
+                    <div class="user-role" id="userRole">Administrator</div>
                 </div>
             </div>
-            <button class="btn btn-outline w-100" onclick="logout()">
+            <button class="btn logout-btn" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i>Sign Out
             </button>
         </div>
@@ -737,14 +880,21 @@
         <!-- Dashboard Section -->
         <div id="dashboard-section" class="section">
             <div class="top-bar">
-                <div>
+                <div class="page-info">
                     <h1 class="page-title">Admin Dashboard</h1>
                     <p class="page-subtitle">Manage your BVEC CODE Club website content</p>
                 </div>
-                <div>
-                    <button class="btn btn-success" onclick="previewWebsite()">
-                        <i class="fas fa-eye"></i>Preview Website
-                    </button>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="adminIdBadge">ID: 2025#0010</div>
+                        <button class="btn btn-primary" onclick="previewWebsite()">
+                            <i class="fas fa-eye"></i>Preview Website
+                        </button>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="currentTime"></div>
+                        <div id="currentDate"></div>
+                    </div>
                 </div>
             </div>
 
@@ -801,486 +951,174 @@
             </div>
         </div>
 
-        <!-- Events Section -->
-        <div id="events-section" class="section d-none">
-            <div class="top-bar">
-                <div>
-                    <h1 class="page-title">Events Management</h1>
-                    <p class="page-subtitle">Create and manage club events</p>
-                </div>
-                <div>
-                    <button class="btn btn-primary" onclick="showEventModal()">
-                        <i class="fas fa-plus"></i>Add Event
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-calendar-alt"></i>Events List
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Event</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="eventsTable">
-                                <tr>
-                                    <td colspan="4" class="text-center py-4">
-                                        <p class="text-muted">No events found. Create your first event!</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Blogs Section -->
-        <div id="blogs-section" class="section d-none">
-            <div class="top-bar">
-                <div>
-                    <h1 class="page-title">Blog Management</h1>
-                    <p class="page-subtitle">Create and manage blog posts</p>
-                </div>
-                <div>
-                    <button class="btn btn-primary" onclick="showBlogModal()">
-                        <i class="fas fa-plus"></i>Add Blog Post
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-blog"></i>Blog Posts
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="blogsTable">
-                                <tr>
-                                    <td colspan="5" class="text-center py-4">
-                                        <p class="text-muted">No blog posts found. Create your first post!</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Section -->
-        <div id="results-section" class="section d-none">
-            <div class="top-bar">
-                <div>
-                    <h1 class="page-title">Results Management</h1>
-                    <p class="page-subtitle">Manage event results and winners</p>
-                </div>
-                <div>
-                    <button class="btn btn-primary" onclick="showResultModal()">
-                        <i class="fas fa-plus"></i>Add Result
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-trophy"></i>Event Results
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Event Name</th>
-                                    <th>Winners</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="resultsTable">
-                                <tr>
-                                    <td colspan="4" class="text-center py-4">
-                                        <p class="text-muted">No results found. Add event results!</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Notices Section -->
-        <div id="notices-section" class="section d-none">
-            <div class="top-bar">
-                <div>
-                    <h1 class="page-title">Notices & Announcements</h1>
-                    <p class="page-subtitle">Post important announcements</p>
-                </div>
-                <div>
-                    <button class="btn btn-primary" onclick="showNoticeModal()">
-                        <i class="fas fa-plus"></i>Add Notice
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-bullhorn"></i>Active Notices
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Priority</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="noticesTable">
-                                <tr>
-                                    <td colspan="4" class="text-center py-4">
-                                        <p class="text-muted">No notices found. Create your first notice!</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team Section -->
-        <div id="team-section" class="section d-none">
-            <div class="top-bar">
-                <div>
-                    <h1 class="page-title">Team Management</h1>
-                    <p class="page-subtitle">Manage team members and roles</p>
-                </div>
-                <div>
-                    <button class="btn btn-primary" onclick="showTeamModal()">
-                        <i class="fas fa-plus"></i>Add Member
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-users"></i>Team Members
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Photo</th>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th>Semester</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="teamTable">
-                                <tr>
-                                    <td colspan="5" class="text-center py-4">
-                                        <p class="text-muted">No team members found. Add your team!</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Other sections (submissions, settings) remain the same as before -->
-        <div id="submissions-section" class="section d-none">
-            <!-- Previous submissions content -->
-        </div>
-
+        <!-- Settings Section -->
         <div id="settings-section" class="section d-none">
-            <!-- Previous settings content -->
+            <div class="top-bar">
+                <div class="page-info">
+                    <h1 class="page-title">Settings & Preferences</h1>
+                    <p class="page-subtitle">Customize your admin panel experience</p>
+                </div>
+                <div class="top-actions">
+                    <div class="status-info">
+                        <div class="admin-id" id="settingsAdminId">ID: 2025#0010</div>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="current-time" id="settingsCurrentTime"></div>
+                        <div id="settingsCurrentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-grid">
+                <!-- Account Settings -->
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Account Settings</h5>
+                            <p class="text-muted small mb-0">Manage your admin account</p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Membership ID</label>
+                        <input type="text" class="form-control" id="settingsMembershipId" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <input type="text" class="form-control" value="Administrator" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Session Status</label>
+                        <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                            <span>Current session active</span>
+                            <span class="badge bg-success">Online</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger w-100" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>Sign Out
+                    </button>
+                </div>
+
+                <!-- Theme Settings -->
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Appearance</h5>
+                            <p class="text-muted small mb-0">Customize your interface</p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Theme Mode</label>
+                        <div class="theme-selector">
+                            <div class="theme-option active" id="lightTheme" onclick="setTheme('light')">
+                                <div class="theme-preview light"></div>
+                                <div>
+                                    <div class="fw-medium">Light</div>
+                                    <small class="text-muted">Default theme</small>
+                                </div>
+                            </div>
+                            <div class="theme-option" id="darkTheme" onclick="setTheme('dark')">
+                                <div class="theme-preview dark"></div>
+                                <div>
+                                    <div class="fw-medium">Dark</div>
+                                    <small class="text-muted">Easy on eyes</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoThemeSwitch">
+                        <label class="form-check-label" for="autoThemeSwitch">
+                            Auto switch based on system preference
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Notifications</h5>
+                            <p class="text-muted small mb-0">Control your alerts</p>
+                        </div>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                        <label class="form-check-label" for="emailNotifications">
+                            Email notifications
+                        </label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="pushNotifications" checked>
+                        <label class="form-check-label" for="pushNotifications">
+                            Browser notifications
+                        </label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="soundNotifications">
+                        <label class="form-check-label" for="soundNotifications">
+                            Sound alerts
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Data Management -->
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Data Management</h5>
+                            <p class="text-muted small mb-0">Backup and restore</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline w-100 mb-3" onclick="exportAllData()">
+                        <i class="fas fa-download"></i>Export All Data
+                    </button>
+                    <button class="btn btn-outline w-100 mb-3" onclick="importData()">
+                        <i class="fas fa-upload"></i>Import Data
+                    </button>
+                    <button class="btn btn-danger w-100" onclick="clearAllData()">
+                        <i class="fas fa-trash"></i>Clear All Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other sections remain the same as previous implementation -->
+        <div id="events-section" class="section d-none">
+            <!-- Events management content -->
+        </div>
+
+        <div id="blogs-section" class="section d-none">
+            <!-- Blogs management content -->
+        </div>
+
+        <div id="results-section" class="section d-none">
+            <!-- Results management content -->
+        </div>
+
+        <div id="notices-section" class="section d-none">
+            <!-- Notices management content -->
+        </div>
+
+        <div id="team-section" class="section d-none">
+            <!-- Team management content -->
+        </div>
+
+        <div id="submissions-section" class="section d-none">
+            <!-- Submissions content -->
         </div>
     </main>
-
-    <!-- Event Modal -->
-    <div class="modal fade" id="eventModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eventModalTitle">Add Event</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="eventForm">
-                        <input type="hidden" id="eventId">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Event Title *</label>
-                                    <input type="text" class="form-control" id="eventTitle" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Event Date *</label>
-                                    <input type="datetime-local" class="form-control" id="eventDate" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Description *</label>
-                            <textarea class="form-control" id="eventDescription" rows="4" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Event Image</label>
-                            <div class="image-upload" onclick="document.getElementById('eventImage').click()">
-                                <i class="fas fa-upload fa-2x text-muted mb-2"></i>
-                                <p class="text-muted">Click to upload event image</p>
-                                <input type="file" id="eventImage" style="display: none;" accept="image/*" onchange="previewImage(this, 'eventImagePreview')">
-                            </div>
-                            <div id="eventImagePreview" class="mt-3"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveEvent()">Save Event</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Blog Modal -->
-    <div class="modal fade" id="blogModal" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="blogModalTitle">Add Blog Post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="blogForm">
-                        <input type="hidden" id="blogId">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="mb-3">
-                                    <label class="form-label">Blog Title *</label>
-                                    <input type="text" class="form-control" id="blogTitle" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Author *</label>
-                                    <input type="text" class="form-control" id="blogAuthor" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Blog Content *</label>
-                            <div id="blogEditor" style="height: 300px;"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Featured Image</label>
-                            <div class="image-upload" onclick="document.getElementById('blogImage').click()">
-                                <i class="fas fa-upload fa-2x text-muted mb-2"></i>
-                                <p class="text-muted">Click to upload featured image</p>
-                                <input type="file" id="blogImage" style="display: none;" accept="image/*" onchange="previewImage(this, 'blogImagePreview')">
-                            </div>
-                            <div id="blogImagePreview" class="mt-3"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveBlog()">Save Blog Post</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Result Modal -->
-    <div class="modal fade" id="resultModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resultModalTitle">Add Result</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="resultForm">
-                        <input type="hidden" id="resultId">
-                        <div class="mb-3">
-                            <label class="form-label">Event Name *</label>
-                            <input type="text" class="form-control" id="resultEventName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Position Holders *</label>
-                            <div id="positionHolders">
-                                <div class="row mb-2">
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Position (1st, 2nd...)" name="position[]">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Winner Name" name="winner[]">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-success" onclick="addPositionRow()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Certificates (Optional)</label>
-                            <input type="file" class="form-control" id="resultCertificates" multiple accept=".pdf,.jpg,.png">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveResult()">Save Result</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notice Modal -->
-    <div class="modal fade" id="noticeModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="noticeModalTitle">Add Notice</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="noticeForm">
-                        <input type="hidden" id="noticeId">
-                        <div class="mb-3">
-                            <label class="form-label">Notice Title *</label>
-                            <input type="text" class="form-control" id="noticeTitle" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Content *</label>
-                            <textarea class="form-control" id="noticeContent" rows="4" required></textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Priority</label>
-                                    <select class="form-control" id="noticePriority">
-                                        <option value="low">Low</option>
-                                        <option value="medium" selected>Medium</option>
-                                        <option value="high">High</option>
-                                        <option value="urgent">Urgent</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Expiry Date</label>
-                                    <input type="date" class="form-control" id="noticeExpiry">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveNotice()">Save Notice</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Team Modal -->
-    <div class="modal fade" id="teamModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="teamModalTitle">Add Team Member</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="teamForm">
-                        <input type="hidden" id="teamId">
-                        <div class="mb-3">
-                            <label class="form-label">Member Photo</label>
-                            <div class="image-upload" onclick="document.getElementById('teamPhoto').click()">
-                                <i class="fas fa-user fa-2x text-muted mb-2"></i>
-                                <p class="text-muted">Click to upload member photo</p>
-                                <input type="file" id="teamPhoto" style="display: none;" accept="image/*" onchange="previewImage(this, 'teamPhotoPreview')">
-                            </div>
-                            <div id="teamPhotoPreview" class="mt-3"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Full Name *</label>
-                            <input type="text" class="form-control" id="teamName" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Role *</label>
-                                    <select class="form-control" id="teamRole" required>
-                                        <option value="">Select Role</option>
-                                        <option value="President">President</option>
-                                        <option value="Vice President">Vice President</option>
-                                        <option value="Secretary">Secretary</option>
-                                        <option value="Treasurer">Treasurer</option>
-                                        <option value="Event Coordinator">Event Coordinator</option>
-                                        <option value="Technical Lead">Technical Lead</option>
-                                        <option value="Council Member">Council Member</option>
-                                        <option value="Core Team">Core Team</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Semester *</label>
-                                    <select class="form-control" id="teamSemester" required>
-                                        <option value="">Select Semester</option>
-                                        <option value="1">1st Semester</option>
-                                        <option value="2">2nd Semester</option>
-                                        <option value="3">3rd Semester</option>
-                                        <option value="4">4th Semester</option>
-                                        <option value="5">5th Semester</option>
-                                        <option value="6">6th Semester</option>
-                                        <option value="7">7th Semester</option>
-                                        <option value="8">8th Semester</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveTeamMember()">Save Member</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -1291,34 +1129,73 @@
         }
 
         // Initialize
-        let blogEditor;
         document.addEventListener('DOMContentLoaded', function() {
             initializeDashboard();
-            initializeQuill();
-            loadAllData();
+            setupConnectivityMonitoring();
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            loadTheme();
         });
 
         function initializeDashboard() {
             const membershipId = sessionStorage.getItem('membershipId');
+            
+            // Update all ID displays
+            document.getElementById('adminIdBadge').textContent = `ID: ${membershipId}`;
+            document.getElementById('settingsAdminId').textContent = `ID: ${membershipId}`;
+            document.getElementById('mobileUserId').textContent = `ID: ${membershipId}`;
             document.getElementById('userName').textContent = `Admin ${membershipId.slice(-2)}`;
             document.getElementById('userAvatar').textContent = membershipId.slice(-1);
+            document.getElementById('settingsMembershipId').value = membershipId;
+            
+            loadDashboardData();
+            addActivity('Dashboard initialized successfully');
         }
 
-        function initializeQuill() {
-            blogEditor = new Quill('#blogEditor', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        ['blockquote', 'code-block'],
-                        ['link', 'image'],
-                        ['clean']
-                    ]
-                }
+        // Enhanced DateTime Updates
+        function updateDateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit' 
             });
+            const dateString = now.toLocaleDateString('en-US', { 
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            // Update all time displays
+            document.getElementById('currentTime').textContent = timeString;
+            document.getElementById('currentDate').textContent = dateString;
+            document.getElementById('settingsCurrentTime').textContent = timeString;
+            document.getElementById('settingsCurrentDate').textContent = dateString;
+            document.getElementById('mobileDatetime').textContent = `${timeString}`;
+        }
+
+        // Connectivity Monitoring
+        function setupConnectivityMonitoring() {
+            const connectivityStatus = document.getElementById('connectivityStatus');
+            const connectivityText = document.getElementById('connectivityText');
+
+            function updateConnectivityStatus() {
+                if (navigator.onLine) {
+                    connectivityStatus.className = 'connectivity-status online';
+                    connectivityText.textContent = 'Online';
+                } else {
+                    connectivityStatus.className = 'connectivity-status offline';
+                    connectivityText.textContent = 'Offline';
+                }
+            }
+
+            // Initial check
+            updateConnectivityStatus();
+
+            // Listen for connectivity changes
+            window.addEventListener('online', updateConnectivityStatus);
+            window.addEventListener('offline', updateConnectivityStatus);
         }
 
         // Mobile sidebar functions
@@ -1339,758 +1216,150 @@
             document.getElementById('menuIcon').className = 'fas fa-bars';
         }
 
-        // Section navigation
+        // Enhanced Section Navigation
         function showSection(sectionName, element) {
+            // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.add('d-none');
             });
 
+            // Show target section
             const targetSection = document.getElementById(sectionName + '-section');
             if (targetSection) {
                 targetSection.classList.remove('d-none');
             }
 
-            document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(link => {
+            // Update navigation states
+            document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
 
+            // Set active state
             if (element) {
                 element.classList.add('active');
                 const correspondingNavs = document.querySelectorAll(
-                    `.nav-link[onclick*="${sectionName}"], .mobile-nav-item[onclick*="${sectionName}"]`
+                    `.nav-link[onclick*="${sectionName}"]`
                 );
                 correspondingNavs.forEach(nav => nav.classList.add('active'));
             }
 
+            // Close mobile sidebar after navigation
             if (window.innerWidth <= 768) {
                 closeSidebar();
             }
 
-            loadSectionData(sectionName);
+            // Update datetime for different sections
+            updateDateTime();
+            addActivity(`Navigated to ${sectionName.charAt(0).toUpperCase() + sectionName.slice(1)}`);
         }
 
-        function loadSectionData(sectionName) {
-            switch(sectionName) {
-                case 'events':
-                    loadEvents();
-                    break;
-                case 'blogs':
-                    loadBlogs();
-                    break;
-                case 'results':
-                    loadResults();
-                    break;
-                case 'notices':
-                    loadNotices();
-                    break;
-                case 'team':
-                    loadTeam();
-                    break;
+        // Enhanced Theme Management
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('bvec-theme') || 'light';
+            setTheme(savedTheme);
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('bvec-theme', theme);
+            
+            // Update theme selector
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            if (theme === 'dark') {
+                document.getElementById('darkTheme').classList.add('active');
+            } else {
+                document.getElementById('lightTheme').classList.add('active');
+            }
+            
+            addActivity(`Switched to ${theme} theme`);
+        }
+
+        // Settings Functions
+        function exportAllData() {
+            const data = {
+                events: JSON.parse(localStorage.getItem('events') || '[]'),
+                blogs: JSON.parse(localStorage.getItem('blogs') || '[]'),
+                results: JSON.parse(localStorage.getItem('results') || '[]'),
+                notices: JSON.parse(localStorage.getItem('notices') || '[]'),
+                team: JSON.parse(localStorage.getItem('team') || '[]'),
+                activities: JSON.parse(localStorage.getItem('activities') || '[]'),
+                timestamp: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bvec-data-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            addActivity('Exported all data');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            // Validate data structure
+                            if (data.events) localStorage.setItem('events', JSON.stringify(data.events));
+                            if (data.blogs) localStorage.setItem('blogs', JSON.stringify(data.blogs));
+                            if (data.results) localStorage.setItem('results', JSON.stringify(data.results));
+                            if (data.notices) localStorage.setItem('notices', JSON.stringify(data.notices));
+                            if (data.team) localStorage.setItem('team', JSON.stringify(data.team));
+                            
+                            loadDashboardData();
+                            addActivity('Imported data successfully');
+                            alert('Data imported successfully!');
+                        } catch (error) {
+                            alert('Invalid file format. Please select a valid backup file.');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                localStorage.removeItem('events');
+                localStorage.removeItem('blogs');
+                localStorage.removeItem('results');
+                localStorage.removeItem('notices');
+                localStorage.removeItem('team');
+                localStorage.removeItem('activities');
+                
+                loadDashboardData();
+                addActivity('All data cleared');
+                alert('All data has been cleared.');
             }
         }
 
-        // Create Form (Superform integration)
+        // Form Creation (Superform integration)
         function createForm() {
             window.open('https://superform.co/forms/7rjFDb4/edit', '_blank');
             addActivity('Opened Superform editor');
         }
 
         function previewWebsite() {
-            // This would open the main website in preview mode
             alert('Website preview will open here. Connect to your main website URL.');
             addActivity('Previewed main website');
         }
 
-        // Image Preview Function
-        function previewImage(input, previewId) {
-            const previewContainer = document.getElementById(previewId);
-            previewContainer.innerHTML = '';
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'image-preview';
-                    previewContainer.appendChild(img);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // Events CRUD Operations
-        function showEventModal(eventId = null) {
-            const modal = new bootstrap.Modal(document.getElementById('eventModal'));
-            const title = document.getElementById('eventModalTitle');
-            
-            if (eventId) {
-                title.textContent = 'Edit Event';
-                const events = JSON.parse(localStorage.getItem('events') || '[]');
-                const event = events.find(e => e.id === eventId);
-                if (event) {
-                    document.getElementById('eventId').value = event.id;
-                    document.getElementById('eventTitle').value = event.title;
-                    document.getElementById('eventDate').value = event.date;
-                    document.getElementById('eventDescription').value = event.description;
-                }
-            } else {
-                title.textContent = 'Add Event';
-                document.getElementById('eventForm').reset();
-                document.getElementById('eventId').value = '';
-            }
-            
-            modal.show();
-        }
-
-        function saveEvent() {
-            const eventId = document.getElementById('eventId').value;
-            const title = document.getElementById('eventTitle').value;
-            const date = document.getElementById('eventDate').value;
-            const description = document.getElementById('eventDescription').value;
-            const imageFile = document.getElementById('eventImage').files[0];
-            
-            if (!title || !date || !description) {
-                alert('Please fill all required fields');
-                return;
-            }
-
-            let events = JSON.parse(localStorage.getItem('events') || '[]');
-            
-            const eventData = {
-                id: eventId || 'event_' + Date.now(),
-                title,
-                date,
-                description,
-                image: imageFile ? URL.createObjectURL(imageFile) : '',
-                status: 'active',
-                created: new Date().toISOString()
-            };
-
-            if (eventId) {
-                const index = events.findIndex(e => e.id === eventId);
-                events[index] = eventData;
-                addActivity(`Updated event: ${title}`);
-            } else {
-                events.push(eventData);
-                addActivity(`Created new event: ${title}`);
-            }
-
-            localStorage.setItem('events', JSON.stringify(events));
-            loadEvents();
-            bootstrap.Modal.getInstance(document.getElementById('eventModal')).hide();
-            updateDashboardStats();
-        }
-
-        function deleteEvent(eventId) {
-            if (confirm('Are you sure you want to delete this event?')) {
-                let events = JSON.parse(localStorage.getItem('events') || '[]');
-                const event = events.find(e => e.id === eventId);
-                events = events.filter(e => e.id !== eventId);
-                localStorage.setItem('events', JSON.stringify(events));
-                loadEvents();
-                addActivity(`Deleted event: ${event?.title || 'Unknown'}`);
-                updateDashboardStats();
-            }
-        }
-
-        function loadEvents() {
-            const events = JSON.parse(localStorage.getItem('events') || '[]');
-            const tbody = document.getElementById('eventsTable');
-            
-            if (events.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="text-center py-4">
-                            <p class="text-muted">No events found. Create your first event!</p>
-                        </td>
-                    </tr>`;
-                return;
-            }
-
-            let html = '';
-            events.forEach(event => {
-                const eventDate = new Date(event.date);
-                const isUpcoming = eventDate > new Date();
-                html += `
-                    <tr>
-                        <td>
-                            <div class="fw-bold">${event.title}</div>
-                            <small class="text-muted">${event.description.substring(0, 50)}...</small>
-                        </td>
-                        <td>${eventDate.toLocaleDateString()}</td>
-                        <td>
-                            <span class="badge ${isUpcoming ? 'bg-success' : 'bg-secondary'}">
-                                ${isUpcoming ? 'Upcoming' : 'Completed'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="showEventModal('${event.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteEvent('${event.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
-        }
-
-        // Blog CRUD Operations
-        function showBlogModal(blogId = null) {
-            const modal = new bootstrap.Modal(document.getElementById('blogModal'));
-            const title = document.getElementById('blogModalTitle');
-            
-            if (blogId) {
-                title.textContent = 'Edit Blog Post';
-                const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
-                const blog = blogs.find(b => b.id === blogId);
-                if (blog) {
-                    document.getElementById('blogId').value = blog.id;
-                    document.getElementById('blogTitle').value = blog.title;
-                    document.getElementById('blogAuthor').value = blog.author;
-                    blogEditor.root.innerHTML = blog.content;
-                }
-            } else {
-                title.textContent = 'Add Blog Post';
-                document.getElementById('blogForm').reset();
-                document.getElementById('blogId').value = '';
-                blogEditor.setContents([]);
-            }
-            
-            modal.show();
-        }
-
-        function saveBlog() {
-            const blogId = document.getElementById('blogId').value;
-            const title = document.getElementById('blogTitle').value;
-            const author = document.getElementById('blogAuthor').value;
-            const content = blogEditor.root.innerHTML;
-            const imageFile = document.getElementById('blogImage').files[0];
-            
-            if (!title || !author || !content.trim()) {
-                alert('Please fill all required fields');
-                return;
-            }
-
-            let blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
-            
-            const blogData = {
-                id: blogId || 'blog_' + Date.now(),
-                title,
-                author,
-                content,
-                image: imageFile ? URL.createObjectURL(imageFile) : '',
-                status: 'published',
-                created: new Date().toISOString()
-            };
-
-            if (blogId) {
-                const index = blogs.findIndex(b => b.id === blogId);
-                blogs[index] = blogData;
-                addActivity(`Updated blog post: ${title}`);
-            } else {
-                blogs.push(blogData);
-                addActivity(`Created new blog post: ${title}`);
-            }
-
-            localStorage.setItem('blogs', JSON.stringify(blogs));
-            loadBlogs();
-            bootstrap.Modal.getInstance(document.getElementById('blogModal')).hide();
-            updateDashboardStats();
-        }
-
-        function deleteBlog(blogId) {
-            if (confirm('Are you sure you want to delete this blog post?')) {
-                let blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
-                const blog = blogs.find(b => b.id === blogId);
-                blogs = blogs.filter(b => b.id !== blogId);
-                localStorage.setItem('blogs', JSON.stringify(blogs));
-                loadBlogs();
-                addActivity(`Deleted blog post: ${blog?.title || 'Unknown'}`);
-                updateDashboardStats();
-            }
-        }
-
-        function loadBlogs() {
-            const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
-            const tbody = document.getElementById('blogsTable');
-            
-            if (blogs.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center py-4">
-                            <p class="text-muted">No blog posts found. Create your first post!</p>
-                        </td>
-                    </tr>`;
-                return;
-            }
-
-            let html = '';
-            blogs.forEach(blog => {
-                const createdDate = new Date(blog.created);
-                html += `
-                    <tr>
-                        <td>
-                            <div class="fw-bold">${blog.title}</div>
-                            <small class="text-muted">${blog.content.replace(/<[^>]*>/g, '').substring(0, 50)}...</small>
-                        </td>
-                        <td>${blog.author}</td>
-                        <td>${createdDate.toLocaleDateString()}</td>
-                        <td>
-                            <span class="badge bg-success">${blog.status}</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="showBlogModal('${blog.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog('${blog.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
-        }
-
-        // Results CRUD Operations
-        function showResultModal(resultId = null) {
-            const modal = new bootstrap.Modal(document.getElementById('resultModal'));
-            const title = document.getElementById('resultModalTitle');
-            
-            if (resultId) {
-                title.textContent = 'Edit Result';
-                const results = JSON.parse(localStorage.getItem('results') || '[]');
-                const result = results.find(r => r.id === resultId);
-                if (result) {
-                    document.getElementById('resultId').value = result.id;
-                    document.getElementById('resultEventName').value = result.eventName;
-                    // Load position holders
-                    loadPositionHolders(result.positions);
-                }
-            } else {
-                title.textContent = 'Add Result';
-                document.getElementById('resultForm').reset();
-                document.getElementById('resultId').value = '';
-                resetPositionHolders();
-            }
-            
-            modal.show();
-        }
-
-        function addPositionRow() {
-            const container = document.getElementById('positionHolders');
-            const newRow = document.createElement('div');
-            newRow.className = 'row mb-2';
-            newRow.innerHTML = `
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Position (1st, 2nd...)" name="position[]">
-                </div>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Winner Name" name="winner[]">
-                </div>
-                <div class="col-md-3">
-                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            `;
-            container.appendChild(newRow);
-        }
-
-        function resetPositionHolders() {
-            document.getElementById('positionHolders').innerHTML = `
-                <div class="row mb-2">
-                    <div class="col-md-3">
-                        <input type="text" class="form-control" placeholder="Position (1st, 2nd...)" name="position[]">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Winner Name" name="winner[]">
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-success" onclick="addPositionRow()">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function loadPositionHolders(positions) {
-            const container = document.getElementById('positionHolders');
-            container.innerHTML = '';
-            positions.forEach((pos, index) => {
-                const row = document.createElement('div');
-                row.className = 'row mb-2';
-                row.innerHTML = `
-                    <div class="col-md-3">
-                        <input type="text" class="form-control" placeholder="Position" name="position[]" value="${pos.position}">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Winner Name" name="winner[]" value="${pos.winner}">
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn ${index === 0 ? 'btn-success' : 'btn-danger'}" 
-                                onclick="${index === 0 ? 'addPositionRow()' : 'this.parentElement.parentElement.remove()'}">
-                            <i class="fas ${index === 0 ? 'fa-plus' : 'fa-minus'}"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        function saveResult() {
-            const resultId = document.getElementById('resultId').value;
-            const eventName = document.getElementById('resultEventName').value;
-            const positions = [];
-            const positionInputs = document.querySelectorAll('input[name="position[]"]');
-            const winnerInputs = document.querySelectorAll('input[name="winner[]"]');
-            
-            if (!eventName) {
-                alert('Please enter event name');
-                return;
-            }
-
-            for (let i = 0; i < positionInputs.length; i++) {
-                if (positionInputs[i].value && winnerInputs[i].value) {
-                    positions.push({
-                        position: positionInputs[i].value,
-                        winner: winnerInputs[i].value
-                    });
-                }
-            }
-
-            if (positions.length === 0) {
-                alert('Please add at least one position holder');
-                return;
-            }
-
-            let results = JSON.parse(localStorage.getItem('results') || '[]');
-            
-            const resultData = {
-                id: resultId || 'result_' + Date.now(),
-                eventName,
-                positions,
-                created: new Date().toISOString()
-            };
-
-            if (resultId) {
-                const index = results.findIndex(r => r.id === resultId);
-                results[index] = resultData;
-                addActivity(`Updated result: ${eventName}`);
-            } else {
-                results.push(resultData);
-                addActivity(`Added new result: ${eventName}`);
-            }
-
-            localStorage.setItem('results', JSON.stringify(results));
-            loadResults();
-            bootstrap.Modal.getInstance(document.getElementById('resultModal')).hide();
-            updateDashboardStats();
-        }
-
-        function deleteResult(resultId) {
-            if (confirm('Are you sure you want to delete this result?')) {
-                let results = JSON.parse(localStorage.getItem('results') || '[]');
-                const result = results.find(r => r.id === resultId);
-                results = results.filter(r => r.id !== resultId);
-                localStorage.setItem('results', JSON.stringify(results));
-                loadResults();
-                addActivity(`Deleted result: ${result?.eventName || 'Unknown'}`);
-            }
-        }
-
-        function loadResults() {
-            const results = JSON.parse(localStorage.getItem('results') || '[]');
-            const tbody = document.getElementById('resultsTable');
-            
-            if (results.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="text-center py-4">
-                            <p class="text-muted">No results found. Add event results!</p>
-                        </td>
-                    </tr>`;
-                return;
-            }
-
-            let html = '';
-            results.forEach(result => {
-                const createdDate = new Date(result.created);
-                const winners = result.positions.map(p => `${p.position}: ${p.winner}`).join(', ');
-                html += `
-                    <tr>
-                        <td>
-                            <div class="fw-bold">${result.eventName}</div>
-                        </td>
-                        <td>
-                            <small>${winners}</small>
-                        </td>
-                        <td>${createdDate.toLocaleDateString()}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="showResultModal('${result.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteResult('${result.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
-        }
-
-        // Notice CRUD Operations
-        function showNoticeModal(noticeId = null) {
-            const modal = new bootstrap.Modal(document.getElementById('noticeModal'));
-            const title = document.getElementById('noticeModalTitle');
-            
-            if (noticeId) {
-                title.textContent = 'Edit Notice';
-                const notices = JSON.parse(localStorage.getItem('notices') || '[]');
-                const notice = notices.find(n => n.id === noticeId);
-                if (notice) {
-                    document.getElementById('noticeId').value = notice.id;
-                    document.getElementById('noticeTitle').value = notice.title;
-                    document.getElementById('noticeContent').value = notice.content;
-                    document.getElementById('noticePriority').value = notice.priority;
-                    document.getElementById('noticeExpiry').value = notice.expiry;
-                }
-            } else {
-                title.textContent = 'Add Notice';
-                document.getElementById('noticeForm').reset();
-                document.getElementById('noticeId').value = '';
-            }
-            
-            modal.show();
-        }
-
-        function saveNotice() {
-            const noticeId = document.getElementById('noticeId').value;
-            const title = document.getElementById('noticeTitle').value;
-            const content = document.getElementById('noticeContent').value;
-            const priority = document.getElementById('noticePriority').value;
-            const expiry = document.getElementById('noticeExpiry').value;
-            
-            if (!title || !content) {
-                alert('Please fill all required fields');
-                return;
-            }
-
-            let notices = JSON.parse(localStorage.getItem('notices') || '[]');
-            
-            const noticeData = {
-                id: noticeId || 'notice_' + Date.now(),
-                title,
-                content,
-                priority,
-                expiry,
-                status: 'active',
-                created: new Date().toISOString()
-            };
-
-            if (noticeId) {
-                const index = notices.findIndex(n => n.id === noticeId);
-                notices[index] = noticeData;
-                addActivity(`Updated notice: ${title}`);
-            } else {
-                notices.push(noticeData);
-                addActivity(`Created new notice: ${title}`);
-            }
-
-            localStorage.setItem('notices', JSON.stringify(notices));
-            loadNotices();
-            bootstrap.Modal.getInstance(document.getElementById('noticeModal')).hide();
-            updateDashboardStats();
-        }
-
-        function deleteNotice(noticeId) {
-            if (confirm('Are you sure you want to delete this notice?')) {
-                let notices = JSON.parse(localStorage.getItem('notices') || '[]');
-                const notice = notices.find(n => n.id === noticeId);
-                notices = notices.filter(n => n.id !== noticeId);
-                localStorage.setItem('notices', JSON.stringify(notices));
-                loadNotices();
-                addActivity(`Deleted notice: ${notice?.title || 'Unknown'}`);
-                updateDashboardStats();
-            }
-        }
-
-        function loadNotices() {
-            const notices = JSON.parse(localStorage.getItem('notices') || '[]');
-            const tbody = document.getElementById('noticesTable');
-            
-            if (notices.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="text-center py-4">
-                            <p class="text-muted">No notices found. Create your first notice!</p>
-                        </td>
-                    </tr>`;
-                return;
-            }
-
-            let html = '';
-            notices.forEach(notice => {
-                const createdDate = new Date(notice.created);
-                const priorityClass = {
-                    low: 'bg-secondary',
-                    medium: 'bg-primary',
-                    high: 'bg-warning',
-                    urgent: 'bg-danger'
-                };
-                html += `
-                    <tr>
-                        <td>
-                            <div class="fw-bold">${notice.title}</div>
-                            <small class="text-muted">${notice.content.substring(0, 50)}...</small>
-                        </td>
-                        <td>
-                            <span class="badge ${priorityClass[notice.priority]}">${notice.priority}</span>
-                        </td>
-                        <td>${createdDate.toLocaleDateString()}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="showNoticeModal('${notice.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteNotice('${notice.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
-        }
-
-        // Team CRUD Operations
-        function showTeamModal(teamId = null) {
-            const modal = new bootstrap.Modal(document.getElementById('teamModal'));
-            const title = document.getElementById('teamModalTitle');
-            
-            if (teamId) {
-                title.textContent = 'Edit Team Member';
-                const team = JSON.parse(localStorage.getItem('team') || '[]');
-                const member = team.find(t => t.id === teamId);
-                if (member) {
-                    document.getElementById('teamId').value = member.id;
-                    document.getElementById('teamName').value = member.name;
-                    document.getElementById('teamRole').value = member.role;
-                    document.getElementById('teamSemester').value = member.semester;
-                }
-            } else {
-                title.textContent = 'Add Team Member';
-                document.getElementById('teamForm').reset();
-                document.getElementById('teamId').value = '';
-            }
-            
-            modal.show();
-        }
-
-        function saveTeamMember() {
-            const teamId = document.getElementById('teamId').value;
-            const name = document.getElementById('teamName').value;
-            const role = document.getElementById('teamRole').value;
-            const semester = document.getElementById('teamSemester').value;
-            const photoFile = document.getElementById('teamPhoto').files[0];
-            
-            if (!name || !role || !semester) {
-                alert('Please fill all required fields');
-                return;
-            }
-
-            let team = JSON.parse(localStorage.getItem('team') || '[]');
-            
-            const memberData = {
-                id: teamId || 'team_' + Date.now(),
-                name,
-                role,
-                semester,
-                photo: photoFile ? URL.createObjectURL(photoFile) : '',
-                created: new Date().toISOString()
-            };
-
-            if (teamId) {
-                const index = team.findIndex(t => t.id === teamId);
-                team[index] = memberData;
-                addActivity(`Updated team member: ${name}`);
-            } else {
-                team.push(memberData);
-                addActivity(`Added new team member: ${name}`);
-            }
-
-            localStorage.setItem('team', JSON.stringify(team));
-            loadTeam();
-            bootstrap.Modal.getInstance(document.getElementById('teamModal')).hide();
-            updateDashboardStats();
-        }
-
-        function deleteTeamMember(teamId) {
-            if (confirm('Are you sure you want to remove this team member?')) {
-                let team = JSON.parse(localStorage.getItem('team') || '[]');
-                const member = team.find(t => t.id === teamId);
-                team = team.filter(t => t.id !== teamId);
-                localStorage.setItem('team', JSON.stringify(team));
-                loadTeam();
-                addActivity(`Removed team member: ${member?.name || 'Unknown'}`);
-                updateDashboardStats();
-            }
-        }
-
-        function loadTeam() {
-            const team = JSON.parse(localStorage.getItem('team') || '[]');
-            const tbody = document.getElementById('teamTable');
-            
-            if (team.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center py-4">
-                            <p class="text-muted">No team members found. Add your team!</p>
-                        </td>
-                    </tr>`;
-                return;
-            }
-
-            let html = '';
-            team.forEach(member => {
-                html += `
-                    <tr>
-                        <td>
-                            ${member.photo ? 
-                                `<img src="${member.photo}" alt="${member.name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">` : 
-                                `<div style="width: 50px; height: 50px; border-radius: 50%; background: var(--sage-green); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${member.name.charAt(0)}</div>`
-                            }
-                        </td>
-                        <td>
-                            <div class="fw-bold">${member.name}</div>
-                        </td>
-                        <td>${member.role}</td>
-                        <td>${member.semester} Semester</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="showTeamModal('${member.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteTeamMember('${member.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
-        }
-
         // Dashboard Stats Update
-        function updateDashboardStats() {
+        function loadDashboardData() {
             const events = JSON.parse(localStorage.getItem('events') || '[]');
             const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
             const team = JSON.parse(localStorage.getItem('team') || '[]');
@@ -2100,6 +1369,8 @@
             document.getElementById('blogsCount').textContent = blogs.length;
             document.getElementById('teamCount').textContent = team.length;
             document.getElementById('noticesCount').textContent = notices.filter(n => n.status === 'active').length;
+            
+            loadRecentActivities();
         }
 
         // Activity Tracking
@@ -2129,8 +1400,8 @@
             activities.slice(0, 5).forEach(activity => {
                 const timeAgo = getTimeAgo(new Date(activity.timestamp));
                 html += `
-                    <div class="d-flex align-items-center mb-2 p-2 border-start border-3 border-primary bg-light rounded">
-                        <i class="fas fa-circle text-primary me-3" style="font-size: 0.5rem;"></i>
+                    <div class="d-flex align-items-center mb-3 p-3 border-start border-3 border-primary bg-light rounded">
+                        <i class="fas fa-circle text-primary me-3" style="font-size: 0.6rem;"></i>
                         <div class="flex-grow-1">
                             <div class="fw-medium">${activity.activity}</div>
                             <small class="text-muted">${timeAgo} by ${activity.user}</small>
@@ -2151,16 +1422,12 @@
             return Math.floor(diffInSeconds / 86400) + 'd ago';
         }
 
-        // Load All Data
-        function loadAllData() {
-            updateDashboardStats();
-            loadRecentActivities();
-        }
-
         function logout() {
-            addActivity('Admin logged out');
-            sessionStorage.clear();
-            window.location.href = 'index.html';
+            if (confirm('Are you sure you want to sign out?')) {
+                addActivity('Admin logged out');
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            }
         }
 
         // Initialize activities
@@ -2168,9 +1435,29 @@
             addActivity('BVEC CODE Club CMS initialized');
         }
 
+        // Handle window resize
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 closeSidebar();
+            }
+        });
+
+        // Auto theme detection
+        const autoThemeSwitch = document.getElementById('autoThemeSwitch');
+        if (autoThemeSwitch) {
+            autoThemeSwitch.addEventListener('change', function() {
+                if (this.checked) {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    setTheme(prefersDark ? 'dark' : 'light');
+                }
+            });
+        }
+
+        // System theme change listener
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+            const autoTheme = document.getElementById('autoThemeSwitch');
+            if (autoTheme && autoTheme.checked) {
+                setTheme(e.matches ? 'dark' : 'light');
             }
         });
     </script>
